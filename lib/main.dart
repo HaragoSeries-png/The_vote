@@ -16,8 +16,26 @@ class Store extends ChangeNotifier {
     li.add(data);
     notifyListeners();
   }
+
   void remove(data) {
     li.remove(data);
+    notifyListeners();
+  }
+
+  void changecategory(cat) {
+    print(cat);
+    if (cat == 'food') {
+      li = ['ต้มยำ', 'กระเพรา', 'ข้าวผัด'];
+    } else if (cat == 'travel') {
+      li = ['หัวหีน', 'ทะเล', 'ภูเขา', 'ภูเรา'];
+    } else if (cat == 'luck') {
+      li = [
+        'เกลือ',
+        'เกลือมาก',
+        'เกลือที่สุด',
+        'เกลื่อเหมือนกันอแต่เป็นสีเขียว'
+      ];
+    }
     notifyListeners();
   }
 }
@@ -120,7 +138,7 @@ class _VoteListState extends State<VoteList> {
   final TextEditingController _textController = new TextEditingController();
   final db = DatabaseHelper.instace;
   final random = Random();
- 
+
   String S;
   String result;
   @override
@@ -129,13 +147,8 @@ class _VoteListState extends State<VoteList> {
     super.initState();
   }
 
-  
-
   void _updateResults(Canditems text) {
-    setState(() {
-      
-    });
-    
+    setState(() {});
   }
 
   // void randd() {
@@ -147,8 +160,12 @@ class _VoteListState extends State<VoteList> {
 
   void showmore() {
     showCupertinoModalBottomSheet(
-        context: context,
-        builder: (context) => Showcurrent());
+        context: context, builder: (context) => Showcurrent());
+  }
+
+  void showtrend() {
+    showCupertinoModalBottomSheet(
+        context: context, builder: (context) => Trendshow());
   }
 
   @override
@@ -161,7 +178,6 @@ class _VoteListState extends State<VoteList> {
           builder: (context, Store provider, Widget child) {
             return Column(
               children: <Widget>[
-                Text(provider.li[0]),
                 Padding(
                     padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
                     child: TextField(
@@ -220,12 +236,25 @@ class _VoteListState extends State<VoteList> {
                         )
                       : Text('add more'),
                 ),
-                ElevatedButton(
-                  onPressed: showmore,
-                  child: Text('Show current'),
-                  style: ElevatedButton.styleFrom(
-                    primary: provider.li.length > 1 ? Colors.teal : Colors.grey,
-                  ),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: showmore,
+                      child: Text('Show current'),
+                      style: ElevatedButton.styleFrom(
+                        primary:
+                            provider.li.length > 1 ? Colors.teal : Colors.grey,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: showtrend,
+                      child: Text('Show trend'),
+                      style: ElevatedButton.styleFrom(
+                        primary:
+                            provider.li.length > 1 ? Colors.teal : Colors.grey,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             );
@@ -407,28 +436,57 @@ class _ShowcurrentState extends State<Showcurrent> {
   //   this.li = widget.li;
   //   super.initState();
   // }
-
-  List<Canditems> li;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Consumer(
-          builder: (context, Store provider, Widget child){
-            return ListView.builder(
-              itemCount: provider.li.length,
-              itemBuilder: (BuildContext context, int index) {
-                  var l = provider.li[index];
-                  return ListTile(
-                    title: Text(l),
-                    subtitle: Column(
-                      children:[
-                        ElevatedButton(child: Text('Remove'),onPressed: (){provider.remove(l);},)
-                      ]
-                    ),
-                  );
-              },
-            );
-          }           
-        ));
+        body: Consumer(builder: (context, Store provider, Widget child) {
+      return ListView.builder(
+        itemCount: provider.li.length,
+        itemBuilder: (BuildContext context, int index) {
+          var l = provider.li[index];
+          return ListTile(
+            title: Text(l),
+            subtitle: Column(children: [
+              ElevatedButton(
+                child: Text('Remove'),
+                onPressed: () {
+                  provider.remove(l);
+                },
+              )
+            ]),
+          );
+        },
+      );
+    }));
+  }
+}
+
+class Trendshow extends StatelessWidget {
+  List<String> trend = ['food','travel','luck'];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Consumer(builder: (context, Store provider, Widget child) {
+        return 
+          ListView.builder(
+            itemCount: trend.length,
+            itemBuilder: (BuildContext context, int index) {
+              var l = trend[index];
+              return ListTile(
+                title: Text(l),
+                subtitle: Column(children: [
+                  ElevatedButton(
+                    child: Text('Remove'),
+                    onPressed: () {
+                      provider.changecategory(l);
+                    },
+                  )
+                ]),
+              );
+            },
+          );
+       
+      }),
+    );
   }
 }
