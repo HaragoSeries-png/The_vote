@@ -10,10 +10,10 @@ import 'database_helper.dart';
 import 'package:provider/provider.dart';
 
 class Store extends ChangeNotifier {
-  var myList = <String>[];
+  var li = <String>['aaaaaaayyaaaa'];
 
   void add() {
-    myList.add('new item');
+    li.add('new item');
     notifyListeners();
   }
 }
@@ -26,21 +26,28 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'The vote',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) {
+          return Store();
+        })
+      ],
+      child: MaterialApp(
+        title: 'The vote',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+        ),
+        home: Mainpags(),
       ),
-      home: Mainpags(),
     );
   }
 }
@@ -148,84 +155,84 @@ class _VoteListState extends State<VoteList> {
 
   @override
   Widget build(BuildContext context) {
-    var store = Provider.of<Store>(context);
     return Scaffold(
-      
         appBar: AppBar(
           title: Text('All random'),
         ),
-        body: ChangeNotifierProvider(
-          create: (_)=>Store(),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
-                  child: TextField(
-                    controller: _textController,
-                    decoration: new InputDecoration(hintText: "Type in here!"),
-                    onSubmitted: (text) {
-                      print(li.length);
-                      var t = Canditems(text, 0.0);
-                      _updateResults(t);
-                      _textController.clear();
-                    },
-                  )),
-              ElevatedButton(
-                onPressed: randd,
-                child: Text('Random'),
-                style: ElevatedButton.styleFrom(
-                  primary: li.length > 1 ? Colors.teal : Colors.grey,
+        body: Consumer(
+          builder: (context, Store provider, Widget child) {
+            return Column(
+              children: <Widget>[
+                Text(provider.li[0]),
+                Padding(
+                    padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+                    child: TextField(
+                      controller: _textController,
+                      decoration:
+                          new InputDecoration(hintText: "Type in here!"),
+                      onSubmitted: (text) {
+                        print(li.length);
+                        var t = Canditems(text, 0.0);
+                        _updateResults(t);
+                        _textController.clear();
+                      },
+                    )),
+                ElevatedButton(
+                  onPressed: randd,
+                  child: Text('Random'),
+                  style: ElevatedButton.styleFrom(
+                    primary: li.length > 1 ? Colors.teal : Colors.grey,
+                  ),
                 ),
-              ),
-              Text((result == null
-                  ? 'please input '
-                  : "Result is :" + result.toString())),
-              // Expanded(
-              //     child: ListView.builder(
-              //   itemCount: li.length,
-              //   itemBuilder: (BuildContext context, int index) {
-              //     var l = li[index];
-              //     return ListTile(
-              //       title: Text(l.name),
-              //     );
-              //   },
-              // )),
-              Expanded(
-                
-                child: li.length > 1
-                    ? Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: FortuneWheel(
-                            // changing the return animation when the user stops dragging
-                            physics: CircularPanPhysics(
-                              duration: Duration(seconds: 3),
-                              curve: Curves.decelerate,
-                            ),
-                            onFling: () {
-                              controller.add(1);
-                            },
-                            selected: controller.stream,
-                            items: (li.length > 1
-                                ? li.map((e) {
-                                    return FortuneItem(
-                                        child: Text(e.name.toString()));
-                                  }).toList()
-                                : [
-                                    FortuneItem(child: Text('now ')),
-                                    FortuneItem(child: Text('now '))
-                                  ])),
-                      )
-                    : Text('add more'),
-              ),
-              ElevatedButton(
-                onPressed: showmore,
-                child: Text('Show current'),
-                style: ElevatedButton.styleFrom(
-                  primary: li.length > 1 ? Colors.teal : Colors.grey,
+                Text((result == null
+                    ? 'please input '
+                    : "Result is :" + result.toString())),
+                // Expanded(
+                //     child: ListView.builder(
+                //   itemCount: li.length,
+                //   itemBuilder: (BuildContext context, int index) {
+                //     var l = li[index];
+                //     return ListTile(
+                //       title: Text(l.name),
+                //     );
+                //   },
+                // )),
+                Expanded(
+                  child: li.length > 1
+                      ? Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: FortuneWheel(
+                              // changing the return animation when the user stops dragging
+                              physics: CircularPanPhysics(
+                                duration: Duration(seconds: 3),
+                                curve: Curves.decelerate,
+                              ),
+                              onFling: () {
+                                controller.add(1);
+                              },
+                              selected: controller.stream,
+                              items: (provider.li.length > 1
+                                  ? provider.li.map((e) {
+                                      return FortuneItem(
+                                          child: Text(e.toString()));
+                                    }).toList()
+                                  : [
+                                      FortuneItem(child: Text('now ')),
+                                      FortuneItem(child: Text('now '))
+                                    ])),
+                        )
+                      : Text('add more'),
                 ),
-              ),
-            ],
-          ),
+                ElevatedButton(
+                  onPressed: showmore,
+                  child: Text('Show current'),
+                  style: ElevatedButton.styleFrom(
+                    primary: li.length > 1 ? Colors.teal : Colors.grey,
+                  ),
+                ),
+              ],
+            );
+          },
         ));
   }
 }
