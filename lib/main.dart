@@ -226,8 +226,12 @@ class _VoteListState extends State<VoteList> {
                               selected: controller.stream,
                               items: (provider.li.length > 1
                                   ? provider.li.map((e) {
-                                      return FortuneItem(
-                                          child: Text(e.toString()));
+                                      return FortuneItem(                             
+                                        child: Container(
+                                          padding: const EdgeInsets.all(16.0),
+                                          
+                                          child: Text(e.toString(),style: TextStyle(fontSize: 16)))
+                                      );
                                     }).toList()
                                   : [
                                       FortuneItem(child: Text('now ')),
@@ -462,30 +466,68 @@ class _ShowcurrentState extends State<Showcurrent> {
 }
 
 class Trendshow extends StatelessWidget {
-  List<String> trend = ['food','travel','luck'];
+  List<String> trend = ['food', 'travel', 'luck'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer(builder: (context, Store provider, Widget child) {
-        return 
-          ListView.builder(
-            itemCount: trend.length,
-            itemBuilder: (BuildContext context, int index) {
-              var l = trend[index];
-              return ListTile(
-                title: Text(l),
-                subtitle: Column(children: [
-                  ElevatedButton(
-                    child: Text('Remove'),
-                    onPressed: () {
-                      provider.changecategory(l);
-                    },
-                  )
-                ]),
-              );
-            },
-          );
-       
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+            ),
+            Expanded(
+                child: ListView(
+              children: [
+                ListTile(
+                  tileColor: Colors.white24,
+                  leading: Image.asset('assets/plane.jpg'),
+                  title: Text('travel'),
+                  subtitle: Column(
+                    children: [
+                      ElevatedButton(
+                        child: Text('select'),
+                        onPressed: () {
+                          provider.changecategory('travel');
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                ListTile(
+                  tileColor: Colors.white24,
+                  leading: Image.asset('assets/food.jpg'),
+                  title: Text('food'),
+                  subtitle: Column(
+                    children: [
+                      ElevatedButton(
+                        child: Text('select'),
+                        onPressed: () {
+                          provider.changecategory('food');
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                ListTile(
+                  tileColor: Colors.white24,
+                  leading: Image.asset('assets/fortune.jpg'),
+                  title: Text('fortune'),
+                  subtitle: Column(
+                    children: [
+                      ElevatedButton(
+                        child: Text('select'),
+                        onPressed: () {
+                          provider.changecategory('luck');
+                        },
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )),
+          ],
+        );
       }),
     );
   }
