@@ -10,10 +10,14 @@ import 'database_helper.dart';
 import 'package:provider/provider.dart';
 
 class Store extends ChangeNotifier {
-  var li = <String>['aaaaaaayyaaaa'];
+  var li = <String>[];
 
-  void add() {
-    li.add('new item');
+  void add(data) {
+    li.add(data);
+    notifyListeners();
+  }
+  void remove(data) {
+    li.remove(data);
     notifyListeners();
   }
 }
@@ -116,7 +120,7 @@ class _VoteListState extends State<VoteList> {
   final TextEditingController _textController = new TextEditingController();
   final db = DatabaseHelper.instace;
   final random = Random();
-  List<Canditems> li = [];
+ 
   String S;
   String result;
   @override
@@ -125,32 +129,26 @@ class _VoteListState extends State<VoteList> {
     super.initState();
   }
 
-  void insertdata(text) async {
-    Map<String, dynamic> row = {DatabaseHelper.columndata: text};
-    final id = await db.insertdata(row);
-  }
+  
 
   void _updateResults(Canditems text) {
     setState(() {
-      insertdata(text);
-      li.add(text);
+      
     });
-    print(li.length);
+    
   }
 
-  void randd() {
-    var re = random.nextInt(li.length);
-    setState(() {
-      result = li[re].name;
-    });
-  }
+  // void randd() {
+  //   var re = random.nextInt(li.length);
+  //   setState(() {
+  //     result = li[re].name;
+  //   });
+  // }
 
   void showmore() {
     showCupertinoModalBottomSheet(
         context: context,
-        builder: (context) => Showcurrent(
-              li: this.li,
-            ));
+        builder: (context) => Showcurrent());
   }
 
   @override
@@ -171,19 +169,18 @@ class _VoteListState extends State<VoteList> {
                       decoration:
                           new InputDecoration(hintText: "Type in here!"),
                       onSubmitted: (text) {
-                        print(li.length);
-                        var t = Canditems(text, 0.0);
-                        _updateResults(t);
+                        var t = provider.add(text);
+
                         _textController.clear();
                       },
                     )),
-                ElevatedButton(
-                  onPressed: randd,
-                  child: Text('Random'),
-                  style: ElevatedButton.styleFrom(
-                    primary: li.length > 1 ? Colors.teal : Colors.grey,
-                  ),
-                ),
+                // ElevatedButton(
+                //   onPressed: randd,
+                //   child: Text('Random'),
+                //   style: ElevatedButton.styleFrom(
+                //     primary: li.length > 1 ? Colors.teal : Colors.grey,
+                //   ),
+                // ),
                 Text((result == null
                     ? 'please input '
                     : "Result is :" + result.toString())),
@@ -198,7 +195,7 @@ class _VoteListState extends State<VoteList> {
                 //   },
                 // )),
                 Expanded(
-                  child: li.length > 1
+                  child: provider.li.length > 1
                       ? Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: FortuneWheel(
@@ -227,7 +224,7 @@ class _VoteListState extends State<VoteList> {
                   onPressed: showmore,
                   child: Text('Show current'),
                   style: ElevatedButton.styleFrom(
-                    primary: li.length > 1 ? Colors.teal : Colors.grey,
+                    primary: provider.li.length > 1 ? Colors.teal : Colors.grey,
                   ),
                 ),
               ],
@@ -400,31 +397,38 @@ class _GroupbState extends State<Groupb> {
 //   }
 // }
 class Showcurrent extends StatefulWidget {
-  List<Canditems> li = [];
-  Showcurrent({Key key, this.li}) : super(key: key);
   @override
   _ShowcurrentState createState() => _ShowcurrentState();
 }
 
 class _ShowcurrentState extends State<Showcurrent> {
   @override
-  void initState() {
-    this.li = widget.li;
-    super.initState();
-  }
+  // void initState() {
+  //   this.li = widget.li;
+  //   super.initState();
+  // }
 
   List<Canditems> li;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-      itemCount: li.length,
-      itemBuilder: (BuildContext context, int index) {
-        var l = li[index];
-        return ListTile(
-          title: Text(l.name),
-        );
-      },
-    ));
+        body: Consumer(
+          builder: (context, Store provider, Widget child){
+            return ListView.builder(
+              itemCount: provider.li.length,
+              itemBuilder: (BuildContext context, int index) {
+                  var l = provider.li[index];
+                  return ListTile(
+                    title: Text(l),
+                    subtitle: Column(
+                      children:[
+                        ElevatedButton(child: Text('Remove'),onPressed: (){provider.remove(l);},)
+                      ]
+                    ),
+                  );
+              },
+            );
+          }           
+        ));
   }
 }
