@@ -4,16 +4,39 @@ import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:flutter/material.dart';
 import 'package:imagebutton/imagebutton.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'dart:ui' as ui;
 import 'listitem.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'database_helper.dart';
 import 'package:provider/provider.dart';
 
 class Store extends ChangeNotifier {
-  var myList = <String>[];
+  var li = <String>[];
 
-  void add() {
-    myList.add('new item');
+  void add(data) {
+    li.add(data);
+    notifyListeners();
+  }
+
+  void remove(data) {
+    li.remove(data);
+    notifyListeners();
+  }
+
+  void changecategory(cat) {
+    print(cat);
+    if (cat == 'food') {
+      li = ['ต้มยำ', 'กระเพรา', 'ข้าวผัด'];
+    } else if (cat == 'travel') {
+      li = ['หัวหิน', 'ทะเล', 'ภูเขา', 'ภูเรา'];
+    } else if (cat == 'luck') {
+      li = [
+        'เกลือ',
+        'เกลือมาก',
+        'เกลือที่สุด',
+        'เกลื่อเหมือนกันอแต่เป็นสีเขียว'
+      ];
+    }
     notifyListeners();
   }
 }
@@ -23,16 +46,22 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'The vote',
-      theme: ThemeData(
-      
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) {
+          return Store();
+        })
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'The vote',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Mainpags(),
       ),
-      home: Mainpags(),
     );
   }
 }
@@ -43,69 +72,177 @@ class Mainpags extends StatefulWidget {
 }
 
 class _MainpagsState extends State<Mainpags> {
+  final double _borderRadius = 24;
+  void test(r) {
+    if (r == 'Random')
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => RandomSingle()));
+    else if (r == 'GroupRandom')
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Groupb()));
+  }
+
+  var items = [
+    PlaceInfo('Random Single Mode', Color(0xff6DC8F3), Color(0xff73A1F9), 1,
+        'Dubai', 'cosy', 'Random'),
+    PlaceInfo('Random Group', Color(0xffFFB157), Color(0xffFFA057), 2, 'Dubai',
+        'cosy', 'GroupRandom'),
+    PlaceInfo('Dubai 2', Color(0xffD76EF5), Color(0xff8F7AFE), 4.4, 'Dubai',
+        'cosy', 'Random'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('main'),
-      ),
-
-      body: Center(
-        child: Column(
-          children: [
-
-            Container(
-              padding: EdgeInsets.fromLTRB(0.0, 60, 0, 40),
-              child: ImageButton(
-                children: <Widget>[],
-                width: 200,
-                height: 200,
-                label: Text('allrandom'),
-                mainAxisAlignment: MainAxisAlignment.end,
-                unpressedImage: Image.asset('assets/allrandom.jpg'),
-                pressedImage: Image.asset('assets/allrandom.jpg'),
-                onTap: () {
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => VoteList()));
-                },
-              ),
-            ),
-
-            
-            Container(
-              padding: EdgeInsets.fromLTRB(0.0, 30, 0, 40),
-              child: ImageButton(
-                children: <Widget>[],
-                width: 200,
-                height: 200,
-                label: Text('group'),
-                mainAxisAlignment: MainAxisAlignment.end,
-                unpressedImage: Image.asset('assets/grouping.png'),
-                pressedImage: Image.asset('assets/grouping.png'),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Groupb()));
-                },
-              ),
-            ),
-          ],
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF545D68)),
+          onPressed: () {},
         ),
+        title: Text(
+          'Home Page',
+          style: TextStyle(
+              fontFamily: 'Varela', fontSize: 20, color: Color(0xFF545D68)),
+        ),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.notifications_none, color: Color(0xFF545D68)))
+        ],
       ),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {
+              test(items[index].route);
+            },
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(_borderRadius),
+                          gradient: LinearGradient(
+                              colors: [
+                                items[index].startColor,
+                                items[index].endColor
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight),
+                          boxShadow: [
+                            BoxShadow(
+                                color: items[index].endColor,
+                                blurRadius: 3,
+                                offset: Offset(0, 2))
+                          ]),
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      top: 0,
+                      child: CustomPaint(
+                        size: Size(100, 160),
+                        painter: CustomCardShapePainter(_borderRadius,
+                            items[index].startColor, items[index].endColor),
+                      ),
+                    ),
+                    Positioned.fill(
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Image.asset(
+                              'assets/icons/alarm-clock.png',
+                              height: 64,
+                              width: 64,
+                            ),
+                            flex: 2,
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  items[index].name,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  items[index].category,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    items[index].location,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text(
+                                  items[index].rating.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   backgroundColor: Color(0xFFF17532),
+      //   child: Icon(Icons.fastfood),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // bottomNavigationBar: BottomBar(),
     );
   }
 }
 
-class VoteList extends StatefulWidget {
+class RandomSingle extends StatefulWidget {
   @override
-  _VoteListState createState() => _VoteListState();
+  _RandomSingleState createState() => _RandomSingleState();
 }
 
-class _VoteListState extends State<VoteList> {
+class _RandomSingleState extends State<RandomSingle> {
   StreamController<int> controller = StreamController<int>();
   final TextEditingController _textController = new TextEditingController();
   final db = DatabaseHelper.instace;
   final random = Random();
-  List<Canditems> li = [];
+
   String S;
   String result;
   @override
@@ -114,114 +251,116 @@ class _VoteListState extends State<VoteList> {
     super.initState();
   }
 
-  void insertdata(text) async {
-    Map<String, dynamic> row = {DatabaseHelper.columndata: text};
-    final id = await db.insertdata(row);
-  }
-
   void _updateResults(Canditems text) {
-    setState(() {
-      insertdata(text);
-      li.add(text);
-    });
-    print(li.length);
-  }
-
-  void randd() {
-    var re = random.nextInt(li.length);
-    setState(() {
-      result = li[re].name;
-    });
+    setState(() {});
   }
 
   void showmore() {
     showCupertinoModalBottomSheet(
-        context: context,
-        builder: (context) => Showcurrent(
-              li: this.li,
-            ));
+        context: context, builder: (context) => Showcurrent());
+  }
+
+  void showtrend() {
+    showCupertinoModalBottomSheet(
+        context: context, builder: (context) => Trendshow());
   }
 
   @override
   Widget build(BuildContext context) {
-    var store = Provider.of<Store>(context);
     return Scaffold(
-      
         appBar: AppBar(
           title: Text('All random'),
         ),
-        body: ChangeNotifierProvider(
-          create: (_)=>Store(),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
-                  child: TextField(
-                    controller: _textController,
-                    decoration: new InputDecoration(hintText: "Type in here!"),
-                    onSubmitted: (text) {
-                      print(li.length);
-                      var t = Canditems(text, 0.0);
-                      _updateResults(t);
-                      _textController.clear();
-                    },
-                  )),
-              ElevatedButton(
-                onPressed: randd,
-                child: Text('Random'),
-                style: ElevatedButton.styleFrom(
-                  primary: li.length > 1 ? Colors.teal : Colors.grey,
+        body: Consumer(
+          builder: (context, Store provider, Widget child) {
+            return Column(
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+                    child: TextField(
+                      controller: _textController,
+                      decoration:
+                          new InputDecoration(hintText: "Type in here!"),
+                      onSubmitted: (text) {
+                        var t = provider.add(text);
+
+                        _textController.clear();
+                      },
+                    )),
+                // ElevatedButton(
+                //   onPressed: randd,
+                //   child: Text('Random'),
+                //   style: ElevatedButton.styleFrom(
+                //     primary: li.length > 1 ? Colors.teal : Colors.grey,
+                //   ),
+                // ),
+                Text((result == null
+                    ? 'please input '
+                    : "Result is :" + result.toString())),
+                // Expanded(
+                //     child: ListView.builder(
+                //   itemCount: li.length,
+                //   itemBuilder: (BuildContext context, int index) {
+                //     var l = li[index];
+                //     return ListTile(
+                //       title: Text(l.name),
+                //     );
+                //   },
+                // )),
+                Expanded(
+                  child: provider.li.length > 1
+                      ? Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: FortuneWheel(
+                              // changing the return animation when the user stops dragging
+                              physics: CircularPanPhysics(
+                                duration: Duration(seconds: 3),
+                                curve: Curves.decelerate,
+                              ),
+                              onFling: () {
+                                controller.add(1);
+                              },
+                              selected: controller.stream,
+                              items: (provider.li.length > 1
+                                  ? provider.li.map((e) {
+                                      return FortuneItem(
+                                          child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(e.toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 16))));
+                                    }).toList()
+                                  : [
+                                      FortuneItem(child: Text('now ')),
+                                      FortuneItem(child: Text('now '))
+                                    ])),
+                        )
+                      : Text('add more'),
                 ),
-              ),
-              Text((result == null
-                  ? 'please input '
-                  : "Result is :" + result.toString())),
-              // Expanded(
-              //     child: ListView.builder(
-              //   itemCount: li.length,
-              //   itemBuilder: (BuildContext context, int index) {
-              //     var l = li[index];
-              //     return ListTile(
-              //       title: Text(l.name),
-              //     );
-              //   },
-              // )),
-              Expanded(
-                
-                child: li.length > 1
-                    ? Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: FortuneWheel(
-                            // changing the return animation when the user stops dragging
-                            physics: CircularPanPhysics(
-                              duration: Duration(seconds: 3),
-                              curve: Curves.decelerate,
-                            ),
-                            onFling: () {
-                              controller.add(1);
-                            },
-                            selected: controller.stream,
-                            items: (li.length > 1
-                                ? li.map((e) {
-                                    return FortuneItem(
-                                        child: Text(e.name.toString()));
-                                  }).toList()
-                                : [
-                                    FortuneItem(child: Text('now ')),
-                                    FortuneItem(child: Text('now '))
-                                  ])),
-                      )
-                    : Text('add more'),
-              ),
-              ElevatedButton(
-                onPressed: showmore,
-                child: Text('Show current'),
-                style: ElevatedButton.styleFrom(
-                  primary: li.length > 1 ? Colors.teal : Colors.grey,
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: showmore,
+                      child: Text('Show current'),
+                      style: ElevatedButton.styleFrom(
+                        primary:
+                            provider.li.length > 1 ? Colors.teal : Colors.grey,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: showtrend,
+                      child: Text('Show trend'),
+                      style: ElevatedButton.styleFrom(
+                        primary:
+                            provider.li.length > 1 ? Colors.teal : Colors.grey,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
+              ],
+            );
+          },
         ));
   }
 }
@@ -358,6 +497,51 @@ class _GroupbState extends State<Groupb> {
   }
 }
 
+class PlaceInfo {
+  final String name;
+  final String category;
+  final String location;
+  final double rating;
+  final Color startColor;
+  final Color endColor;
+  final String route;
+  PlaceInfo(this.name, this.startColor, this.endColor, this.rating,
+      this.location, this.category, this.route);
+}
+
+class CustomCardShapePainter extends CustomPainter {
+  final double radius;
+  final Color startColor;
+  final Color endColor;
+  CustomCardShapePainter(this.radius, this.startColor, this.endColor);
+  @override
+  void paint(Canvas canvas, Size size) {
+    var radius = 3.0;
+    var paint = Paint();
+    paint.shader = ui.Gradient.linear(
+        Offset(3, 0), Offset(size.width, size.height), [
+      HSLColor.fromColor(startColor).withLightness(0.8).toColor(),
+      endColor
+    ]);
+    var path = Path()
+      ..moveTo(0, size.height)
+      ..lineTo(size.width - radius, size.height)
+      ..quadraticBezierTo(
+          size.width, size.height, size.width, size.height - radius)
+      ..lineTo(size.width, radius)
+      ..quadraticBezierTo(size.width, 0, size.width - radius, 0)
+      ..lineTo(size.width - radius * radius, 0)
+      ..quadraticBezierTo(-radius, 2 * radius, 0, size.height)
+      ..close();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    // TODO: implement shouldRepaint
+    throw UnimplementedError();
+  }
+}
 // class Fortune_wheel extends StatefulWidget {
 //   @override
 //   _Fortune_wheelState createState() => _Fortune_wheelState();
@@ -389,31 +573,105 @@ class _GroupbState extends State<Groupb> {
 //   }
 // }
 class Showcurrent extends StatefulWidget {
-  List<Canditems> li = [];
-  Showcurrent({Key key, this.li}) : super(key: key);
   @override
   _ShowcurrentState createState() => _ShowcurrentState();
 }
 
 class _ShowcurrentState extends State<Showcurrent> {
   @override
-  void initState() {
-    this.li = widget.li;
-    super.initState();
-  }
-
-  List<Canditems> li;
+  // void initState() {
+  //   this.li = widget.li;
+  //   super.initState();
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-      itemCount: li.length,
-      itemBuilder: (BuildContext context, int index) {
-        var l = li[index];
-        return ListTile(
-          title: Text(l.name),
+        body: Consumer(builder: (context, Store provider, Widget child) {
+      return ListView.builder(
+        itemCount: provider.li.length,
+        itemBuilder: (BuildContext context, int index) {
+          var l = provider.li[index];
+          return ListTile(
+            title: Text(l),
+            subtitle: Column(children: [
+              ElevatedButton(
+                child: Text('Remove'),
+                onPressed: () {
+                  provider.remove(l);
+                },
+              )
+            ]),
+          );
+        },
+      );
+    }));
+  }
+}
+
+class Trendshow extends StatelessWidget {
+  List<String> trend = ['food', 'travel', 'luck'];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Consumer(builder: (context, Store provider, Widget child) {
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+            ),
+            Expanded(
+                child: ListView(
+              children: [
+                ListTile(
+                  tileColor: Colors.white24,
+                  leading: Image.asset('assets/plane.jpg'),
+                  title: Text('travel'),
+                  subtitle: Column(
+                    children: [
+                      ElevatedButton(
+                        child: Text('select'),
+                        onPressed: () {
+                          provider.changecategory('travel');
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                ListTile(
+                  tileColor: Colors.white24,
+                  leading: Image.asset('assets/food.jpg'),
+                  title: Text('food'),
+                  subtitle: Column(
+                    children: [
+                      ElevatedButton(
+                        child: Text('select'),
+                        onPressed: () {
+                          provider.changecategory('food');
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                ListTile(
+                  tileColor: Colors.white24,
+                  leading: Image.asset('assets/fortune.jpg'),
+                  title: Text('fortune'),
+                  subtitle: Column(
+                    children: [
+                      ElevatedButton(
+                        child: Text('select'),
+                        onPressed: () {
+                          provider.changecategory('luck');
+                        },
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )),
+          ],
         );
-      },
-    ));
+      }),
+    );
   }
 }

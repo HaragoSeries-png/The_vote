@@ -54,6 +54,10 @@ flutter:
   assets:
       - assets/allrandom.jpg
       - assets/grouping.png
+      - assets/food.jpg
+      - assets/plane.jpg
+      - assets/fortune.jpg
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
