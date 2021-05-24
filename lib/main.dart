@@ -1,7 +1,22 @@
+import 'dart:async';
 import 'dart:math';
+import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:flutter/material.dart';
 import 'package:imagebutton/imagebutton.dart';
+import 'package:sqflite/sqlite_api.dart';
 import 'listitem.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'database_helper.dart';
+import 'package:provider/provider.dart';
+
+class Store extends ChangeNotifier {
+  var myList = <String>[];
+
+  void add() {
+    myList.add('new item');
+    notifyListeners();
+  }
+}
 
 void main() {
   runApp(MyApp());
@@ -34,9 +49,11 @@ class _MainpagsState extends State<Mainpags> {
       appBar: AppBar(
         title: Text('main'),
       ),
+
       body: Center(
         child: Column(
           children: [
+
             Container(
               padding: EdgeInsets.fromLTRB(0.0, 60, 0, 40),
               child: ImageButton(
@@ -49,10 +66,12 @@ class _MainpagsState extends State<Mainpags> {
                 pressedImage: Image.asset('assets/allrandom.jpg'),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => VoteList()));
+                  MaterialPageRoute(builder: (context) => VoteList()));
                 },
               ),
             ),
+
+            
             Container(
               padding: EdgeInsets.fromLTRB(0.0, 30, 0, 40),
               child: ImageButton(
@@ -82,7 +101,9 @@ class VoteList extends StatefulWidget {
 }
 
 class _VoteListState extends State<VoteList> {
+  StreamController<int> controller = StreamController<int>();
   final TextEditingController _textController = new TextEditingController();
+  final db = DatabaseHelper.instace;
   final random = Random();
   List<Canditems> li = [];
   String S;
@@ -93,8 +114,14 @@ class _VoteListState extends State<VoteList> {
     super.initState();
   }
 
+  void insertdata(text) async {
+    Map<String, dynamic> row = {DatabaseHelper.columndata: text};
+    final id = await db.insertdata(row);
+  }
+
   void _updateResults(Canditems text) {
     setState(() {
+      insertdata(text);
       li.add(text);
     });
     print(li.length);
@@ -107,47 +134,94 @@ class _VoteListState extends State<VoteList> {
     });
   }
 
+  void showmore() {
+    showCupertinoModalBottomSheet(
+        context: context,
+        builder: (context) => Showcurrent(
+              li: this.li,
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
+    var store = Provider.of<Store>(context);
     return Scaffold(
+      
         appBar: AppBar(
           title: Text('All random'),
         ),
-        body: Column(
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
-                child: TextField(
-                  controller: _textController,
-                  decoration: new InputDecoration(hintText: "Type in here!"),
-                  onSubmitted: (text) {
-                    print(li.length);
-                    var t = Canditems(text, 0.0);
-                    _updateResults(t);
-                    _textController.clear();
-                  },
-                )),
-            ElevatedButton(
-              onPressed: randd,
-              child: Text('Random'),
-              style: ElevatedButton.styleFrom(
-                primary: li.length == 0 ? Colors.teal : Colors.red,
+        body: ChangeNotifierProvider(
+          create: (_)=>Store(),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+                  child: TextField(
+                    controller: _textController,
+                    decoration: new InputDecoration(hintText: "Type in here!"),
+                    onSubmitted: (text) {
+                      print(li.length);
+                      var t = Canditems(text, 0.0);
+                      _updateResults(t);
+                      _textController.clear();
+                    },
+                  )),
+              ElevatedButton(
+                onPressed: randd,
+                child: Text('Random'),
+                style: ElevatedButton.styleFrom(
+                  primary: li.length > 1 ? Colors.teal : Colors.grey,
+                ),
               ),
-            ),
-            Text((result == null
-                ? 'please input '
-                : "Result is :" + result.toString())),
-            Expanded(
-                child: ListView.builder(
-              itemCount: li.length,
-              itemBuilder: (BuildContext context, int index) {
-                var l = li[index];
-                return ListTile(
-                  title: Text(l.name),
-                );
-              },
-            )),
-          ],
+              Text((result == null
+                  ? 'please input '
+                  : "Result is :" + result.toString())),
+              // Expanded(
+              //     child: ListView.builder(
+              //   itemCount: li.length,
+              //   itemBuilder: (BuildContext context, int index) {
+              //     var l = li[index];
+              //     return ListTile(
+              //       title: Text(l.name),
+              //     );
+              //   },
+              // )),
+              Expanded(
+                
+                child: li.length > 1
+                    ? Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: FortuneWheel(
+                            // changing the return animation when the user stops dragging
+                            physics: CircularPanPhysics(
+                              duration: Duration(seconds: 3),
+                              curve: Curves.decelerate,
+                            ),
+                            onFling: () {
+                              controller.add(1);
+                            },
+                            selected: controller.stream,
+                            items: (li.length > 1
+                                ? li.map((e) {
+                                    return FortuneItem(
+                                        child: Text(e.name.toString()));
+                                  }).toList()
+                                : [
+                                    FortuneItem(child: Text('now ')),
+                                    FortuneItem(child: Text('now '))
+                                  ])),
+                      )
+                    : Text('add more'),
+              ),
+              ElevatedButton(
+                onPressed: showmore,
+                child: Text('Show current'),
+                style: ElevatedButton.styleFrom(
+                  primary: li.length > 1 ? Colors.teal : Colors.grey,
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }
@@ -160,7 +234,7 @@ class Groupb extends StatefulWidget {
 class _GroupbState extends State<Groupb> {
   final TextEditingController _textController = new TextEditingController();
   final random = Random();
-  List<String> li = ['a', 'b', 'c','d','e'];
+  List<String> li = ['a', 'b', 'c', 'd', 'e'];
   String S;
   List result = [];
   int ng = 2;
@@ -184,8 +258,8 @@ class _GroupbState extends State<Groupb> {
     var retemp = [];
     var gsize = (li.length.toDouble() / ng.toDouble()).ceil();
     print(ng);
-    for (var i = 0; i <  ng; i++) {
-      for (var k = 0; k <gsize; k++) {
+    for (var i = 0; i < ng; i++) {
+      for (var k = 0; k < gsize; k++) {
         print('----------');
         var re;
         print('in k ' + pool.length.toString());
@@ -207,7 +281,7 @@ class _GroupbState extends State<Groupb> {
         result.add(retemp);
       });
       retemp = [];
-      if(pool.isEmpty){
+      if (pool.isEmpty) {
         break;
       }
     }
@@ -243,24 +317,23 @@ class _GroupbState extends State<Groupb> {
                 ),
                 DropdownButton(
                   value: ng,
-                  items: li.map((String value,) {   
-                    var v = li.indexOf(value)+1;             
-                    return  DropdownMenuItem(
+                  items: li.map((
+                    String value,
+                  ) {
+                    var v = li.indexOf(value) + 1;
+                    return DropdownMenuItem(
                       child: Text((v).toString()),
                       value: v,
                     );
                   }).toList(),
-                  onChanged:(value){
-                    
+                  onChanged: (value) {
                     setState(() {
                       ng = value;
                     });
-                  } ,
+                  },
                 ),
               ],
-              
             ),
-            
             Expanded(
                 child: ListView.builder(
               itemCount: li.length,
@@ -282,5 +355,65 @@ class _GroupbState extends State<Groupb> {
             )),
           ],
         ));
+  }
+}
+
+// class Fortune_wheel extends StatefulWidget {
+//   @override
+//   _Fortune_wheelState createState() => _Fortune_wheelState();
+// }
+
+// class _Fortune_wheelState extends State<Fortune_wheel> {
+//   StreamController<int> controller = StreamController<int>();
+//   var si;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child: FortuneWheel(
+//         // changing the return animation when the user stops dragging
+//         physics: CircularPanPhysics(
+//           duration: Duration(seconds: 1),
+//           curve: Curves.decelerate,
+//         ),
+//         onFling: () {
+//           controller.add(1);
+//         },
+//         selected: controller.stream,
+//         items: [
+//           FortuneItem(child: Text('Han Solo')),
+//           FortuneItem(child: Text('Yoda')),
+//           FortuneItem(child: Text('Obi-Wan Kenobi')),
+//         ],
+//       ),
+//     );
+//   }
+// }
+class Showcurrent extends StatefulWidget {
+  List<Canditems> li = [];
+  Showcurrent({Key key, this.li}) : super(key: key);
+  @override
+  _ShowcurrentState createState() => _ShowcurrentState();
+}
+
+class _ShowcurrentState extends State<Showcurrent> {
+  @override
+  void initState() {
+    this.li = widget.li;
+    super.initState();
+  }
+
+  List<Canditems> li;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: ListView.builder(
+      itemCount: li.length,
+      itemBuilder: (BuildContext context, int index) {
+        var l = li[index];
+        return ListTile(
+          title: Text(l.name),
+        );
+      },
+    ));
   }
 }

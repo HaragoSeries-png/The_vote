@@ -1,5 +1,7 @@
 
-
+class Candilist{
+  List<Canditems> items;
+}
 class Canditems {
   String name;
   double weight;
