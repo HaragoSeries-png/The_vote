@@ -4,6 +4,7 @@ import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:flutter/material.dart';
 import 'package:imagebutton/imagebutton.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:the_vote/thevote.dart';
 import 'dart:ui' as ui;
 import 'listitem.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -80,15 +81,57 @@ class _MainpagsState extends State<Mainpags> {
     else if (r == 'GroupRandom')
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Groupb()));
+    else if (r == 'Thevote')
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ThevotePage()));
+  }
+
+  imgFunction(c) {
+    if (c == 'Random')
+      return Image.asset(
+        'assets/img/dice.png',
+        height: 64,
+        width: 64,
+      );
+    else if (c == 'GroupRandom')
+      return Image.asset(
+        'assets/img/kanban.png',
+        height: 64,
+        width: 64,
+      );
+    else if (c == 'Thevote')
+      return Image.asset(
+        'assets/img/poll.png',
+        height: 64,
+        width: 64,
+      );
   }
 
   var items = [
-    PlaceInfo('Random Single Mode', Color(0xff6DC8F3), Color(0xff73A1F9), 1,
-        'Dubai', 'cosy', 'Random'),
-    PlaceInfo('Random Group', Color(0xffFFB157), Color(0xffFFA057), 2, 'Dubai',
-        'cosy', 'GroupRandom'),
-    PlaceInfo('Dubai 2', Color(0xffD76EF5), Color(0xff8F7AFE), 4.4, 'Dubai',
-        'cosy', 'Random'),
+    PlaceInfo(
+        'Random Single Mode',
+        Color(0xff6DC8F3),
+        Color(0xff73A1F9),
+        1,
+        'You can create your own challenge or make your decision with yourself',
+        '___________________________________',
+        'Random'),
+    PlaceInfo(
+        'Random Group',
+        Color(0xffFFB157),
+        Color(0xffFFA057),
+        2,
+        'You can mange you group random with yourself in this function',
+        '___________________________________',
+        'GroupRandom'),
+    PlaceInfo(
+        'The Vote',
+        Color(0xffD76EF5),
+        Color(0xff8F7AFE),
+        3,
+        'You can not make decision with you friend So,let the vote help you:)',
+        '___________________________________',
+        'Thevote'),
   ];
 
   @override
@@ -98,19 +141,11 @@ class _MainpagsState extends State<Mainpags> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF545D68)),
-          onPressed: () {},
-        ),
         title: Text(
-          'Home Page',
+          'Select Mode',
           style: TextStyle(
               fontFamily: 'Varela', fontSize: 20, color: Color(0xFF545D68)),
         ),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.notifications_none, color: Color(0xFF545D68)))
-        ],
       ),
       body: ListView.builder(
         itemCount: items.length,
@@ -156,11 +191,7 @@ class _MainpagsState extends State<Mainpags> {
                       child: Row(
                         children: <Widget>[
                           Expanded(
-                            child: Image.asset(
-                              'assets/icons/alarm-clock.png',
-                              height: 64,
-                              width: 64,
-                            ),
+                            child: imgFunction(items[index].route),
                             flex: 2,
                           ),
                           Expanded(
@@ -173,7 +204,8 @@ class _MainpagsState extends State<Mainpags> {
                                   items[index].name,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.w500),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 24),
                                 ),
                                 Text(
                                   items[index].category,
