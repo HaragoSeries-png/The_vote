@@ -90,7 +90,7 @@ class _RandomSingleState extends State<RandomSingle> {
                 Expanded(
                   child: provider.li.length > 1
                       ? Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                           child: FortuneWheel(
                               // changing the return animation when the user stops dragging
                               physics: CircularPanPhysics(

@@ -9,7 +9,7 @@ class Groupb extends StatefulWidget {
 class _GroupbState extends State<Groupb> {
   final TextEditingController _textController = new TextEditingController();
   final random = Random();
-  List<String> li = ['a', 'b', 'c', 'd', 'e'];
+  List<String> li = [];
   String S;
   List result = [];
   int ng = 2;
@@ -35,11 +35,11 @@ class _GroupbState extends State<Groupb> {
     print(ng);
     for (var i = 0; i < ng; i++) {
       for (var k = 0; k < gsize; k++) {
-        print('----------');
+        
         var re;
-        print('in k ' + pool.length.toString());
+
         if (pool.length < gsize) {
-          print('len ' + pool.length.toString());
+
           retemp = List.of(pool);
           pool = [];
           print(retemp);
@@ -51,7 +51,7 @@ class _GroupbState extends State<Groupb> {
         print(n);
         pool.removeAt(re);
       }
-      print('----------------------');
+
       setState(() {
         result.add(retemp);
       });
@@ -83,7 +83,7 @@ class _GroupbState extends State<Groupb> {
                   },
                 )),
             Row(
-              children: [
+              children:li.length>1 ? [
                 ElevatedButton(
                   onPressed: randd,
                   child: Text('Random'),
@@ -108,7 +108,7 @@ class _GroupbState extends State<Groupb> {
                     });
                   },
                 ),
-              ],
+              ]:[Text('')],
             ),
             Expanded(
                 child: ListView.builder(
