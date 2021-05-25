@@ -108,10 +108,10 @@ class _RandomSingleState extends State<RandomSingle> {
                       : Text('add more'),
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 60, horizontal: 105),
+                      
                       child: ElevatedButton(
                         onPressed: showmore,
                         child: Text('SHOW CURRENT'),
@@ -123,7 +123,7 @@ class _RandomSingleState extends State<RandomSingle> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 60),
+                      
                       child: ElevatedButton(
                         onPressed: showtrend,
                         child: Text('TREND'),
@@ -153,11 +153,10 @@ class _ShowcurrentState extends State<Showcurrent> {
       padding: const EdgeInsets.only(
           left: 30.0, top: 30.0, right: 30.0, bottom: 30.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text('Number'),
-          SizedBox(
-            width: 250,
-          ),
+          
           Text('Value'),
         ],
       ),
@@ -174,8 +173,7 @@ class _ShowcurrentState extends State<Showcurrent> {
         body: Consumer(builder: (context, Store provider, Widget child) {
       return Center(
         child: Container(
-          padding: const EdgeInsets.only(
-              left: 30.0, top: 50.0, right: 30.0, bottom: 30.0),
+          
           child: ListView.builder(
             itemCount: provider.li.length + testList.length,
             itemBuilder: (BuildContext context, int index) {
@@ -186,16 +184,13 @@ class _ShowcurrentState extends State<Showcurrent> {
                 return Container(
                   color: Colors.transparent,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(
-                        width: 50,
-                      ),
+                      
                       Text(l),
-                      SizedBox(
-                        width: 300,
-                      ),
+                      
                       Container(
-                        margin: const EdgeInsets.only(top: 20.0),
+                       
                         child: ElevatedButton(
                             child: Text('Remove'),
                             onPressed: () {
@@ -203,7 +198,7 @@ class _ShowcurrentState extends State<Showcurrent> {
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.red,
-                              padding: EdgeInsets.symmetric(vertical: 2),
+                              
                             )),
                       )
                     ],
