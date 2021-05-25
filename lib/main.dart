@@ -229,13 +229,7 @@ class _MainpagsState extends State<Mainpags> {
           );
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   backgroundColor: Color(0xFFF17532),
-      //   child: Icon(Icons.fastfood),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // bottomNavigationBar: BottomBar(),
+   
     );
   }
 }
@@ -288,33 +282,4 @@ class CustomCardShapePainter extends CustomPainter {
     throw UnimplementedError();
   }
 }
-// class Fortune_wheel extends StatefulWidget {
-//   @override
-//   _Fortune_wheelState createState() => _Fortune_wheelState();
-// }
 
-// class _Fortune_wheelState extends State<Fortune_wheel> {
-//   StreamController<int> controller = StreamController<int>();
-//   var si;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: FortuneWheel(
-//         // changing the return animation when the user stops dragging
-//         physics: CircularPanPhysics(
-//           duration: Duration(seconds: 1),
-//           curve: Curves.decelerate,
-//         ),
-//         onFling: () {
-//           controller.add(1);
-//         },
-//         selected: controller.stream,
-//         items: [
-//           FortuneItem(child: Text('Han Solo')),
-//           FortuneItem(child: Text('Yoda')),
-//           FortuneItem(child: Text('Obi-Wan Kenobi')),
-//         ],
-//       ),
-//     );
-//   }
-// }

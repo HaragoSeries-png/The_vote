@@ -46,7 +46,6 @@ class _RandomSingleState extends State<RandomSingle> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
         appBar: AppBar(
           title: Text('All random'),
@@ -91,7 +90,7 @@ class _RandomSingleState extends State<RandomSingle> {
                 Expanded(
                   child: provider.li.length > 1
                       ? Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0,0,0,0),
+                          padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
                           child: FortuneWheel(
                               // changing the return animation when the user stops dragging
                               physics: CircularPanPhysics(
@@ -145,6 +144,7 @@ class _RandomSingleState extends State<RandomSingle> {
         ));
   }
 }
+
 class Showcurrent extends StatefulWidget {
   @override
   _ShowcurrentState createState() => _ShowcurrentState();
@@ -203,68 +203,143 @@ class Trendshow extends StatelessWidget {
         return Column(
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
             ),
             Expanded(
                 child: ListView(
               children: [
-                ListTile(
-                  tileColor: Colors.white24,
-                  leading: Image.asset('assets/plane.jpg'),
-                  title: Text('travel'),
-                  subtitle: Column(
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
                     children: [
-                      ElevatedButton(
-                        child: Text('select'),
-                        onPressed: () {
-                          provider.changecategory('travel');
-                          Navigator.push(
+                      Ink.image(
+                        image: AssetImage(
+                          'assets/img/travel.jpg',
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            provider.changecategory('travel');
+                            Navigator.pop(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => RandomSingle()));
-                        },
-                      )
+                            );
+                          },
+                        ),
+                        height: 240,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(
+                        'TRAVELING',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 24,
+                            letterSpacing: 2.5),
+                      ),
                     ],
                   ),
                 ),
-                ListTile(
-                  tileColor: Colors.white24,
-                  leading: Image.asset('assets/food.jpg'),
-                  title: Text('food'),
-                  subtitle: Column(
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
                     children: [
-                      ElevatedButton(
-                        child: Text('select'),
-                        onPressed: () {
-                          provider.changecategory('food');
-                          Navigator.push(
+                      Ink.image(
+                        image: AssetImage(
+                          'assets/img/food.jpg',
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            provider.changecategory('food');
+                            Navigator.pop(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => RandomSingle()));
-                        },
-                      )
+                            );
+                          },
+                        ),
+                        height: 240,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(
+                        'Food and Drinking',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 24,
+                            letterSpacing: 2.5),
+                      ),
                     ],
                   ),
                 ),
-                ListTile(
-                  tileColor: Colors.white24,
-                  leading: Image.asset('assets/fortune.jpg'),
-                  title: Text('fortune'),
-                  subtitle: Column(
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
                     children: [
-                      ElevatedButton(
-                        child: Text('select'),
-                        onPressed: () {
-                          provider.changecategory('luck');
-                          Navigator.push(
+                      Ink.image(
+                        image: AssetImage(
+                          'assets/img/tarot.jpg',
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            provider.changecategory('luck');
+                            Navigator.pop(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => RandomSingle()));
-                        },
-                      )
+                            );
+                          },
+                        ),
+                        height: 240,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(
+                        'DESTINY',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 24,
+                            letterSpacing: 2.5),
+                      ),
                     ],
                   ),
-                )
+                ),
+                 Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Ink.image(
+                        image: AssetImage(
+                          'assets/img/dummy.jpg',
+                        ),
+                        child: InkWell(
+                          onTap: () {             
+                          },
+                        ),
+                        height: 240,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(
+                        'COMING SOON',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 24,
+                            letterSpacing: 2.5),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             )),
           ],
