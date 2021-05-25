@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) {
           return Store();
+        }),
+        ChangeNotifierProvider(create: (context) {
+          return Votestore();
         })
       ],
       child: MaterialApp(

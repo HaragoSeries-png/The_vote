@@ -31,4 +31,25 @@ class Store extends ChangeNotifier {
       ];
     }
   }
+  notifyListeners();
+}
+class Votestore extends ChangeNotifier {
+  var li ;
+  List<String> label ;
+  List<int> votemap;
+  int votenum =0;
+  void setnumber(data) {
+    li = int.parse(data);
+  }
+
+  void vote(index) {
+    li[index]++;
+    
+  }
+  void setlabel(List<String> l ){
+    label = l;
+    votemap = [for (var i =0;i<l.length;i++) 0];
+    print(votemap);
+  }
+ 
 }
