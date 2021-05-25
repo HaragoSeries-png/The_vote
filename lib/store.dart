@@ -1,7 +1,4 @@
-
-
 import 'package:flutter/material.dart';
-
 
 class Store extends ChangeNotifier {
   var li = <String>[];
@@ -18,10 +15,10 @@ class Store extends ChangeNotifier {
 
   void changecategory(cat) {
     print(cat);
-    if (cat == 'food') {
-      li = ['ต้มยำ', 'กระเพรา', 'ข้าวผัด'];
-    } else if (cat == 'travel') {
+    if (cat == 'travel') {
       li = ['หัวหิน', 'ทะเล', 'ภูเขา', 'ภูเรา'];
+    } else if (cat == 'food') {
+      li = ['ต้มยำ', 'กระเพรา', 'ข้าวผัด'];
     } else if (cat == 'luck') {
       li = [
         'เกลือ',
@@ -30,5 +27,6 @@ class Store extends ChangeNotifier {
         'เกลื่อเหมือนกันอแต่เป็นสีเขียว'
       ];
     }
+    notifyListeners();
   }
 }
