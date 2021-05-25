@@ -14,7 +14,6 @@ import 'database_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:the_vote/store.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -31,9 +30,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'The vote',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeData(primarySwatch: Colors.blue),
         home: Mainpags(),
       ),
     );
@@ -226,13 +223,9 @@ class _MainpagsState extends State<Mainpags> {
           );
         },
       ),
-   
     );
   }
 }
-
-
-
 
 class PlaceInfo {
   final String name;
@@ -279,4 +272,3 @@ class CustomCardShapePainter extends CustomPainter {
     throw UnimplementedError();
   }
 }
-

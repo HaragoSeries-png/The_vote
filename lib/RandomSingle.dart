@@ -60,7 +60,7 @@ class _RandomSingleState extends State<RandomSingle> {
                     child: TextField(
                       controller: _textController,
                       decoration:
-                          new InputDecoration(hintText: "Type in here!"),
+                          new InputDecoration(hintText: "Input Here!!!"),
                       onSubmitted: (text) {
                         var t = provider.add(text);
 
@@ -74,23 +74,12 @@ class _RandomSingleState extends State<RandomSingle> {
                 //     primary: li.length > 1 ? Colors.teal : Colors.grey,
                 //   ),
                 // ),
-                Text((result == null
-                    ? 'please input '
-                    : "Result is :" + result.toString())),
-                // Expanded(
-                //     child: ListView.builder(
-                //   itemCount: li.length,
-                //   itemBuilder: (BuildContext context, int index) {
-                //     var l = li[index];
-                //     return ListTile(
-                //       title: Text(l.name),
-                //     );
-                //   },
-                // )),
+
                 Expanded(
                   child: provider.li.length > 1
                       ? Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
+                          padding:
+                              const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 25.0),
                           child: FortuneWheel(
                               // changing the return animation when the user stops dragging
                               physics: CircularPanPhysics(
@@ -120,20 +109,27 @@ class _RandomSingleState extends State<RandomSingle> {
                 ),
                 Row(
                   children: [
-                    ElevatedButton(
-                      onPressed: showmore,
-                      child: Text('Show current'),
-                      style: ElevatedButton.styleFrom(
-                        primary:
-                            provider.li.length > 1 ? Colors.teal : Colors.grey,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 60, horizontal: 105),
+                      child: ElevatedButton(
+                        onPressed: showmore,
+                        child: Text('SHOW CURRENT'),
+                        style: ElevatedButton.styleFrom(
+                          primary: provider.li.length > 1
+                              ? Colors.teal
+                              : Colors.grey,
+                        ),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: showtrend,
-                      child: Text('Show trend'),
-                      style: ElevatedButton.styleFrom(
-                        primary:
-                            provider.li.length > 1 ? Colors.teal : Colors.grey,
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 60),
+                      child: ElevatedButton(
+                        onPressed: showtrend,
+                        child: Text('TREND'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.teal,
+                        ),
                       ),
                     ),
                   ],
@@ -151,6 +147,22 @@ class Showcurrent extends StatefulWidget {
 }
 
 class _ShowcurrentState extends State<Showcurrent> {
+  List<Widget> testList = [
+    Container(
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(
+          left: 30.0, top: 30.0, right: 30.0, bottom: 30.0),
+      child: Row(
+        children: [
+          Text('Number'),
+          SizedBox(
+            width: 250,
+          ),
+          Text('Value'),
+        ],
+      ),
+    )
+  ];
   @override
   // void initState() {
   //   this.li = widget.li;
@@ -160,22 +172,59 @@ class _ShowcurrentState extends State<Showcurrent> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Consumer(builder: (context, Store provider, Widget child) {
-      return ListView.builder(
-        itemCount: provider.li.length,
-        itemBuilder: (BuildContext context, int index) {
-          var l = provider.li[index];
-          return ListTile(
-            title: Text(l),
-            subtitle: Column(children: [
-              ElevatedButton(
-                child: Text('Remove'),
-                onPressed: () {
-                  provider.remove(l);
-                },
-              )
-            ]),
-          );
-        },
+      return Center(
+        child: Container(
+          padding: const EdgeInsets.only(
+              left: 30.0, top: 50.0, right: 30.0, bottom: 30.0),
+          child: ListView.builder(
+            itemCount: provider.li.length + testList.length,
+            itemBuilder: (BuildContext context, int index) {
+              if (index < testList.length) {
+                return testList[index];
+              } else {
+                var l = provider.li[index - testList.length];
+                return Container(
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 50,
+                      ),
+                      Text(l),
+                      SizedBox(
+                        width: 300,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20.0),
+                        child: ElevatedButton(
+                            child: Text('Remove'),
+                            onPressed: () {
+                              provider.remove(l);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              padding: EdgeInsets.symmetric(vertical: 2),
+                            )),
+                      )
+                    ],
+                  ),
+                );
+              }
+
+              // return ListTile(
+              //   title: Text(l),
+              //   subtitle: Row(children: [
+              // ElevatedButton(
+              //   child: Text('Remove'),
+              //   onPressed: () {
+              //     provider.remove(l);
+              //   },
+              // )
+              //   ]),
+              // );
+            },
+          ),
+        ),
       );
     }));
   }
@@ -310,7 +359,7 @@ class Trendshow extends StatelessWidget {
                     ],
                   ),
                 ),
-                 Card(
+                Card(
                   clipBehavior: Clip.antiAlias,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24),
@@ -323,8 +372,7 @@ class Trendshow extends StatelessWidget {
                           'assets/img/dummy.jpg',
                         ),
                         child: InkWell(
-                          onTap: () {             
-                          },
+                          onTap: () {},
                         ),
                         height: 240,
                         fit: BoxFit.cover,
