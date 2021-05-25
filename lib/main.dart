@@ -38,7 +38,6 @@ class Store extends ChangeNotifier {
         'เกลื่อเหมือนกันอแต่เป็นสีเขียว'
       ];
     }
-    notifyListeners();
   }
 }
 
@@ -302,6 +301,7 @@ class _RandomSingleState extends State<RandomSingle> {
     return Scaffold(
         appBar: AppBar(
           title: Text('All random'),
+          backgroundColor: Color(0xff6DC8F3),
         ),
         body: Consumer(
           builder: (context, Store provider, Widget child) {
@@ -463,6 +463,7 @@ class _GroupbState extends State<Groupb> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Groupby'),
+          backgroundColor: Color(0xffFFB157),
         ),
         body: Column(
           children: <Widget>[
@@ -645,6 +646,19 @@ class Trendshow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        centerTitle: true,
+        title: Text(
+          'Trending Now',
+          style: TextStyle(
+              fontFamily: 'Varela',
+              fontSize: 20,
+              color: Colors.black,
+              letterSpacing: 2.0),
+        ),
+      ),
       body: Consumer(builder: (context, Store provider, Widget child) {
         return Column(
           children: [
@@ -664,6 +678,10 @@ class Trendshow extends StatelessWidget {
                         child: Text('select'),
                         onPressed: () {
                           provider.changecategory('travel');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RandomSingle()));
                         },
                       )
                     ],
@@ -679,6 +697,10 @@ class Trendshow extends StatelessWidget {
                         child: Text('select'),
                         onPressed: () {
                           provider.changecategory('food');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RandomSingle()));
                         },
                       )
                     ],
@@ -694,6 +716,10 @@ class Trendshow extends StatelessWidget {
                         child: Text('select'),
                         onPressed: () {
                           provider.changecategory('luck');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RandomSingle()));
                         },
                       )
                     ],

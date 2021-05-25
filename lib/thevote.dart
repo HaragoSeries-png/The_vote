@@ -11,7 +11,10 @@ class _ThevotePageState extends State<ThevotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('Unyong'),
+      appBar: AppBar(
+        title: Text('The Vote'),
+        backgroundColor: Color(0xffD76EF5),
+      ),
     );
   }
 }
