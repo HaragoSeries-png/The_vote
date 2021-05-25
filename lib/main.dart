@@ -213,7 +213,7 @@ class _VoteListState extends State<VoteList> {
                 Expanded(
                   child: provider.li.length > 1
                       ? Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.fromLTRB(16.0,0,0,0),
                           child: FortuneWheel(
                               // changing the return animation when the user stops dragging
                               physics: CircularPanPhysics(
