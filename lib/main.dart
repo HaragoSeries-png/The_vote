@@ -31,6 +31,15 @@ class MyApp extends StatelessWidget {
         })
       ],
       child: MaterialApp(
+        initialRoute: '/',
+        routes: {
+          // When navigating to the "/" route, build the FirstScreen widget.
+          '/Mainpags': (context) => Mainpags(),
+          // When navigating to the "/second" route, build the SecondScreen widget.
+          '/RandomSingle': (context) => RandomSingle(),
+          '/Groupb': (context) => Groupb(),
+          '/ThevotePage': (context) => ThevotePage(),
+        },
         debugShowCheckedModeBanner: false,
         title: 'The vote',
         theme: ThemeData(primarySwatch: Colors.blue),
@@ -109,122 +118,128 @@ class _MainpagsState extends State<Mainpags> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text(
-          'Select Mode',
-          style: TextStyle(
-              fontFamily: 'Varela', fontSize: 20, color: Color(0xFF545D68)),
+    return WillPopScope(
+      onWillPop: () {
+      return Future.value(false); // if true allow back else block it
+    },
+          child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Select Mode',
+            style: TextStyle(
+                fontFamily: 'Varela', fontSize: 20, color: Color(0xFF545D68)),
+          ),
         ),
-      ),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              test(items[index].route);
-            },
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      height: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(_borderRadius),
-                          gradient: LinearGradient(
-                              colors: [
-                                items[index].startColor,
-                                items[index].endColor
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight),
-                          boxShadow: [
-                            BoxShadow(
-                                color: items[index].endColor,
-                                blurRadius: 3,
-                                offset: Offset(0, 2))
-                          ]),
-                    ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      top: 0,
-                      child: CustomPaint(
-                        size: Size(100, 160),
-                        painter: CustomCardShapePainter(_borderRadius,
-                            items[index].startColor, items[index].endColor),
+        body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {
+                test(items[index].route);
+              },
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(_borderRadius),
+                            gradient: LinearGradient(
+                                colors: [
+                                  items[index].startColor,
+                                  items[index].endColor
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: items[index].endColor,
+                                  blurRadius: 3,
+                                  offset: Offset(0, 2))
+                            ]),
                       ),
-                    ),
-                    Positioned.fill(
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: imgFunction(items[index].route),
-                            flex: 2,
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  items[index].name,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 24),
-                                ),
-                                Text(
-                                  items[index].category,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Flexible(
-                                  child: Text(
-                                    items[index].location,
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        top: 0,
+                        child: CustomPaint(
+                          size: Size(100, 160),
+                          painter: CustomCardShapePainter(_borderRadius,
+                              items[index].startColor, items[index].endColor),
+                        ),
+                      ),
+                      Positioned.fill(
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: imgFunction(items[index].route),
+                              flex: 2,
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    items[index].name,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 24),
+                                  ),
+                                  Text(
+                                    items[index].category,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w500),
                                   ),
-                                ),
-                              ],
+                                  Flexible(
+                                    child: Text(
+                                      items[index].location,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  items[index].rating.toString(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(
+                                    items[index].rating.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

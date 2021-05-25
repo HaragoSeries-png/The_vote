@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:the_vote/store.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
+import 'package:the_vote/main.dart';
 
 class ThevotePage extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class _ThevotePageState extends State<ThevotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+        
           title: Text('The Vote'),
           backgroundColor: Color(0xffD76EF5),
         ),
@@ -168,8 +171,8 @@ class Result extends StatelessWidget {
                 children: [
                   Text(provider.result),
                   ElevatedButton(
-                      onPressed: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ThevotePage())),
+                      onPressed: () => Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Mainpags())),
                       child: Text('End'),
                     )
                 ],

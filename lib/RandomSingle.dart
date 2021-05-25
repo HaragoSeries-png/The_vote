@@ -80,30 +80,50 @@ class _RandomSingleState extends State<RandomSingle> {
                       ? Padding(
                           padding:
                               const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 25.0),
-                          child: FortuneWheel(
-                              // changing the return animation when the user stops dragging
-                              physics: CircularPanPhysics(
-                                duration: Duration(seconds: 3),
-                                curve: Curves.decelerate,
+                          child: provider.li.length < 10
+                              ? FortuneWheel(
+                                
+                                  // changing the return animation when the user stops dragging
+                                  physics: CircularPanPhysics(
+                                    duration: Duration(seconds: 3),
+                                    curve: Curves.decelerate,
+                                  ),
+                                  onFling: () {
+                                    controller.add(1);
+                                  },
+                                  animateFirst: false,
+                                  selected: controller.stream,
+                                  items: (
+                                       provider.li.map((e) {
+                                          return FortuneItem(
+                                            style: FortuneItemStyle(color: Colors.red),
+                                              child: Container(
+                                                  padding: const EdgeInsets.all(
+                                                      16.0),
+                                                  child: Text(e.toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 16))));
+                                        }).toList()
+                                      ))
+                              : Column(
+                                children: [
+                                  FortuneBar(
+                                    height: 300,
+                                    animateFirst: false,
+                                      selected: controller.stream,
+                                      items: provider.li.map((e) {
+                                              return FortuneItem(
+                                                  child: Container(
+                                                      padding: const EdgeInsets.all(
+                                                          16.0),
+                                                      child: Text(e.toString(),
+                                                          style: TextStyle(
+                                                              fontSize: 16))));
+                                            }).toList(),
+                                    ),
+                                    ElevatedButton(onPressed: (){ controller.add(1);}, child: Text('Random'))
+                                ],
                               ),
-                              onFling: () {
-                                controller.add(1);
-                              },
-                              selected: controller.stream,
-                              items: (provider.li.length > 1
-                                  ? provider.li.map((e) {
-                                      return FortuneItem(
-                                          child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
-                                              child: Text(e.toString(),
-                                                  style: TextStyle(
-                                                      fontSize: 16))));
-                                    }).toList()
-                                  : [
-                                      FortuneItem(child: Text('now ')),
-                                      FortuneItem(child: Text('now '))
-                                    ])),
                         )
                       : Text('add more'),
                 ),
@@ -111,7 +131,6 @@ class _RandomSingleState extends State<RandomSingle> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      
                       child: ElevatedButton(
                         onPressed: showmore,
                         child: Text('SHOW CURRENT'),
@@ -123,7 +142,6 @@ class _RandomSingleState extends State<RandomSingle> {
                       ),
                     ),
                     Container(
-                      
                       child: ElevatedButton(
                         onPressed: showtrend,
                         child: Text('TREND'),
@@ -156,7 +174,6 @@ class _ShowcurrentState extends State<Showcurrent> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text('Number'),
-          
           Text('Value'),
         ],
       ),
@@ -173,7 +190,6 @@ class _ShowcurrentState extends State<Showcurrent> {
         body: Consumer(builder: (context, Store provider, Widget child) {
       return Center(
         child: Container(
-          
           child: ListView.builder(
             itemCount: provider.li.length + testList.length,
             itemBuilder: (BuildContext context, int index) {
@@ -186,11 +202,8 @@ class _ShowcurrentState extends State<Showcurrent> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      
                       Text(l),
-                      
                       Container(
-                       
                         child: ElevatedButton(
                             child: Text('Remove'),
                             onPressed: () {
@@ -198,7 +211,6 @@ class _ShowcurrentState extends State<Showcurrent> {
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.red,
-                              
                             )),
                       )
                     ],
