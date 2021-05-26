@@ -85,7 +85,7 @@ class _ThevotePageState extends State<ThevotePage> {
                   child: Text('next'),
                   style: ElevatedButton.styleFrom(
                     primary:  Colors.grey,
-                  ),
+                  ), onPressed: () {  },
               )
             ],
           ));
