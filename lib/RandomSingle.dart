@@ -181,6 +181,7 @@ class Showcurrent extends StatefulWidget {
 }
 
 class _ShowcurrentState extends State<Showcurrent> {
+  TextEditingController _textFieldController = TextEditingController();
   List<Widget> testList = [
     Container(
       margin: const EdgeInsets.only(top: 10),
@@ -195,6 +196,7 @@ class _ShowcurrentState extends State<Showcurrent> {
       ),
     )
   ];
+
   @override
   // void initState() {
   //   this.li = widget.li;
@@ -204,49 +206,94 @@ class _ShowcurrentState extends State<Showcurrent> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Consumer(builder: (context, Store provider, Widget child) {
+      void savedata(cardname) {
+        provider.createcard(cardname);
+      }
+
+      void printall() {
+        provider.printall(1);
+      }
+
+      _displayDialog(BuildContext context) async {
+        return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('What is your Lucky Number'),
+                content: TextField(
+                  controller: _textFieldController,
+                  textInputAction: TextInputAction.go,
+                  keyboardType: TextInputType.numberWithOptions(),
+                  decoration: InputDecoration(hintText: "Enter your number"),
+                ),
+                actions: <Widget>[
+                  new ElevatedButton(
+                    child: new Text('Submit'),
+                    onPressed: () {
+                      savedata(_textFieldController.text);
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      }
+
       return Center(
         child: Container(
-          child: ListView.builder(
-            itemCount: provider.li.length + testList.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (index < testList.length) {
-                return testList[index];
-              } else {
-                var l = provider.li[index - testList.length];
-                return Container(
-                  color: Colors.transparent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(l),
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: ElevatedButton(
-                            child: Text('Remove'),
-                            onPressed: () {
-                              provider.remove(l);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                            )),
-                      )
-                    ],
-                  ),
-                );
-              }
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: provider.li.length + testList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index < testList.length) {
+                      return testList[index];
+                    } else {
+                      var l = provider.li[index - testList.length];
+                      return Container(
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(l),
+                            Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              child: ElevatedButton(
+                                  child: Text('Remove'),
+                                  onPressed: () {
+                                    provider.remove(l);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.red,
+                                  )),
+                            )
+                          ],
+                        ),
+                      );
+                    }
 
-              // return ListTile(
-              //   title: Text(l),
-              //   subtitle: Row(children: [
-              // ElevatedButton(
-              //   child: Text('Remove'),
-              //   onPressed: () {
-              //     provider.remove(l);
-              //   },
-              // )
-              //   ]),
-              // );
-            },
+                    // return ListTile(
+                    //   title: Text(l),
+                    //   subtitle: Row(children: [
+                    // ElevatedButton(
+                    //   child: Text('Remove'),
+                    //   onPressed: () {
+                    //     provider.remove(l);
+                    //   },
+                    // )
+                    //   ]),
+                    // );
+                  },
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    _displayDialog(context);
+                  },
+                  child: Text('Save')),
+              ElevatedButton(onPressed: printall, child: Text('print'))
+            ],
           ),
         ),
       );
@@ -254,7 +301,26 @@ class _ShowcurrentState extends State<Showcurrent> {
   }
 }
 
-class Trendshow extends StatelessWidget {
+class Trendshow extends StatefulWidget {
+  @override
+  _TrendshowState createState() => _TrendshowState();
+}
+
+class _TrendshowState extends State<Trendshow> {
+  final db = DatabaseHelper.instace;
+  Future<bool> getlist() async {
+    cuslist = await db.getcardlist();
+    return true;
+  }
+
+  List<Map<String, dynamic>> cuslist;
+  @override
+  void initState() {
+    print('init');
+    getlist();
+    super.initState();
+  }
+
   List<String> trend = ['food', 'travel', 'luck'];
   @override
   Widget build(BuildContext context) {
@@ -412,6 +478,52 @@ class Trendshow extends StatelessWidget {
                     ],
                   ),
                 ),
+                FutureBuilder(
+                  future: getlist(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                          children: cuslist.map((e) {
+                        return Card(
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Ink.image(
+                                image: AssetImage(
+                                  'assets/img/dummy.jpg',
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    provider.getcarddata(e['id']);
+                                    Navigator.pop(
+                                      context,
+                                    );
+                                  },
+                                ),
+                                height: 240,
+                                fit: BoxFit.cover,
+                              ),
+                              Text(
+                                e['columnCardname'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    letterSpacing: 2.5),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList());
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
+                )
               ],
             )),
           ],
