@@ -9,6 +9,7 @@ class Groupb extends StatefulWidget {
 class _GroupbState extends State<Groupb> {
   final TextEditingController _textController = new TextEditingController();
   final random = Random();
+
   List<String> li = ['1', '2', '3', '4'];
   String S;
   List result = [];
@@ -23,6 +24,12 @@ class _GroupbState extends State<Groupb> {
   void _updateResults(String text) {
     setState(() {
       li.add(text);
+    });
+  }
+
+  void clear() {
+    setState(() {
+      li = [];
     });
   }
 
@@ -70,7 +77,7 @@ class _GroupbState extends State<Groupb> {
                 padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
                 child: TextField(
                   controller: _textController,
-                  decoration: new InputDecoration(hintText: "Type in here!"),
+                  decoration: new InputDecoration(hintText: "Input here!!"),
                   onSubmitted: (text) {
                     print(li.length);
                     _updateResults(text);
@@ -89,6 +96,13 @@ class _GroupbState extends State<Groupb> {
                             primary: li.length == 0
                                 ? Colors.teal
                                 : Color(0xffFFB157),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: clear,
+                          child: Text('Clear'),
+                          style: ElevatedButton.styleFrom(
+                            primary: li.length == 0 ? Colors.teal : Colors.red,
                           ),
                         ),
                         DropdownButton(
@@ -113,35 +127,47 @@ class _GroupbState extends State<Groupb> {
               ),
             ),
             Expanded(
+                child: Container(
+              padding:
+                  const EdgeInsets.only(left: 80, right: 80, top: 0, bottom: 0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
                 child: ListView.builder(
-              itemCount: li.length,
-              itemBuilder: (BuildContext context, int index) {
-                var l = li[index];
-                return Container(
-                  child: ListTile(
-                    title: Text(l),
-                  ),
-                );
-              },
+                  itemCount: li.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var l = li[index];
+                    return Container(
+                      child: ListTile(
+                        title: Text(l),
+                        tileColor: Color(0xFFFFB347),
+                      ),
+                    );
+                  },
+                ),
+              ),
             )),
-            Text('result'),
+            Text('Result'),
             Expanded(
-                child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: result.length,
-              itemBuilder: (BuildContext context, int index) {
-                List l = result[index];
-                return Container(
-                    width: 160.0,
-                    margin: const EdgeInsets.all(10),
-                    color: Colors.red[100],
-                    child: Center(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: l.map((e) {
-                              return Text(e);
-                            }).toList())));
-              },
+                child: Container(
+              margin: const EdgeInsets.only(
+                  left: 80, right: 80, top: 20, bottom: 0),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: result.length,
+                itemBuilder: (BuildContext context, int index) {
+                  List l = result[index];
+                  return Container(
+                      width: 160.0,
+                      margin: const EdgeInsets.all(10),
+                      color: Colors.green,
+                      child: Center(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: l.map((e) {
+                                return Text(e);
+                              }).toList())));
+                },
+              ),
             )),
           ],
         ));
