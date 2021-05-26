@@ -27,6 +27,7 @@ class _RandomSingleState extends State<RandomSingle> {
   @override
   void initState() {
     S = 'OOOO';
+    Store().setdefalt();
     super.initState();
   }
 
@@ -94,13 +95,13 @@ class _RandomSingleState extends State<RandomSingle> {
                                   animateFirst: false,
                                   selected: controller.stream,
                                   items: (
-                                       provider.li.map((e) {
+                                       provider.li.asMap().entries.map((e) {
                                           return FortuneItem(
-                                            style: FortuneItemStyle(color: Colors.red),
+                                            style: FortuneItemStyle(color:(e.key%2==1)?provider.ccolor[0]:provider.ccolor[1],),
                                               child: Container(
                                                   padding: const EdgeInsets.all(
                                                       16.0),
-                                                  child: Text(e.toString(),
+                                                  child: Text(e.value.toString(),
                                                       style: TextStyle(
                                                           fontSize: 16))));
                                         }).toList()
@@ -111,8 +112,9 @@ class _RandomSingleState extends State<RandomSingle> {
                                     height: 300,
                                     animateFirst: false,
                                       selected: controller.stream,
-                                      items: provider.li.map((e) {
+                                      items: provider.li.asMap().entries.map((e) {
                                               return FortuneItem(
+                                                style: FortuneItemStyle(color:(e.key%2==1)?Color(0xff6DC8F3):Color(0xff73A1F9),),
                                                   child: Container(
                                                       padding: const EdgeInsets.all(
                                                           16.0),
