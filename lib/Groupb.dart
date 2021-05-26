@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:random_color/random_color.dart';
 
 class Groupb extends StatefulWidget {
   @override
   _GroupbState createState() => _GroupbState();
 }
+
+RandomColor _randomColor = RandomColor();
+Color _color = _randomColor.randomColor(colorBrightness: ColorBrightness.light);
 
 class _GroupbState extends State<Groupb> {
   final TextEditingController _textController = new TextEditingController();
@@ -85,6 +89,8 @@ class _GroupbState extends State<Groupb> {
                   },
                 )),
             Container(
+              margin: const EdgeInsets.only(
+                  left: 90, right: 90, top: 20, bottom: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: li.length > 1
@@ -123,13 +129,13 @@ class _GroupbState extends State<Groupb> {
                           },
                         ),
                       ]
-                    : [Text('')],
+                    : [Text('hello')],
               ),
             ),
             Expanded(
                 child: Container(
-              padding:
-                  const EdgeInsets.only(left: 80, right: 80, top: 0, bottom: 0),
+              padding: const EdgeInsets.only(
+                  left: 80, right: 80, top: 30, bottom: 0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: ListView.builder(
@@ -146,26 +152,38 @@ class _GroupbState extends State<Groupb> {
                 ),
               ),
             )),
-            Text('Result'),
+            Container(
+                margin: const EdgeInsets.only(left: 30, top: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('RESULT'),
+                  ],
+                )),
             Expanded(
                 child: Container(
               margin: const EdgeInsets.only(
-                  left: 80, right: 80, top: 20, bottom: 0),
+                  left: 80, right: 80, top: 20, bottom: 30),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: result.length,
                 itemBuilder: (BuildContext context, int index) {
                   List l = result[index];
-                  return Container(
-                      width: 160.0,
-                      margin: const EdgeInsets.all(10),
-                      color: Colors.green,
-                      child: Center(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: l.map((e) {
-                                return Text(e);
-                              }).toList())));
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Container(
+                        width: 160.0,
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(50),
+                        color: Color(0xffeed9cd),
+                        child: Center(
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: l.map((e) {
+                                  return Text(e);
+                                }).toList()))),
+                  );
                 },
               ),
             )),
