@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Store extends ChangeNotifier {
   var li = <String>[];
-
+  List<Color> ccolor =[Color(0xff6DC8F3),Color(0xff73A1F9)] ;
   void add(data) {
     li.add(data);
     notifyListeners();
@@ -17,8 +17,10 @@ class Store extends ChangeNotifier {
     print(cat);
     if (cat == 'travel') {
       li = ['หัวหิน', 'ทะเล', 'ภูเขา', 'ภูเรา'];
+      ccolor =[Color(0xff1DC8F3),Color(0xff13A1F9)] ;
     } else if (cat == 'food') {
       li = ['ต้มยำ', 'กระเพรา', 'ข้าวผัด'];
+      ccolor =[Color(0xffff2211),Color(0xff73A1F9)] ;
     } else if (cat == 'luck') {
       li = [
         'เกลือ',
@@ -26,7 +28,15 @@ class Store extends ChangeNotifier {
         'เกลือที่สุด',
         'เกลื่อเหมือนกันอแต่เป็นสีเขียว'
       ];
+      ccolor =[Color(0xff6DC8F3),Color(0xff73A1F9)] ;
     }
+    notifyListeners();
+  }
+  void setdefalt(){
+    print('de');
+    ccolor =[Color(0xff6DC8F3),Color(0xff73A1F9)];
+    li =[];
+    print(li);
     notifyListeners();
   }
   
