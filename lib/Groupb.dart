@@ -9,7 +9,7 @@ class Groupb extends StatefulWidget {
 class _GroupbState extends State<Groupb> {
   final TextEditingController _textController = new TextEditingController();
   final random = Random();
-  List<String> li = ['1','2','3','4'];
+  List<String> li = ['1', '2', '3', '4'];
   String S;
   List result = [];
   int ng = 2;
@@ -31,8 +31,8 @@ class _GroupbState extends State<Groupb> {
     List pool = List.of(li);
     var retemp = [];
     var gsize = (li.length.toDouble() / ng.toDouble()).ceil();
-    print('ng '+ng.toString());
-    print('gsize '+gsize.toString());
+    print('ng ' + ng.toString());
+    print('gsize ' + gsize.toString());
     for (var i = 0; i < ng; i++) {
       for (var k = 0; k < gsize; k++) {
         var re;
@@ -77,67 +77,70 @@ class _GroupbState extends State<Groupb> {
                     _textController.clear();
                   },
                 )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: li.length > 1
-                  ? [
-                      ElevatedButton(
-                        onPressed: randd,
-                        child: Text('Random'),
-                        style: ElevatedButton.styleFrom(
-                          primary: li.length == 0 ? Colors.teal : Colors.red,
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: li.length > 1
+                    ? [
+                        ElevatedButton(
+                          onPressed: randd,
+                          child: Text('Random'),
+                          style: ElevatedButton.styleFrom(
+                            primary: li.length == 0
+                                ? Colors.teal
+                                : Color(0xffFFB157),
+                          ),
                         ),
-                      ),
-                      DropdownButton(
-                        value: ng,
-                        items: li.map((
-                          String value,
-                        ) {
-                          var v = li.indexOf(value) + 1;
-                          return DropdownMenuItem(
-                            child: Text((v).toString()),
-                            value: v,
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            ng = value;
-                          });
-                        },
-                      ),
-                    ]
-                  : [Text('')],
+                        DropdownButton(
+                          value: ng,
+                          items: li.map((
+                            String value,
+                          ) {
+                            var v = li.indexOf(value) + 1;
+                            return DropdownMenuItem(
+                              child: Text((v).toString()),
+                              value: v,
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              ng = value;
+                            });
+                          },
+                        ),
+                      ]
+                    : [Text('')],
+              ),
             ),
             Expanded(
                 child: ListView.builder(
               itemCount: li.length,
               itemBuilder: (BuildContext context, int index) {
                 var l = li[index];
-                return ListTile(
-                  title: Text(l),
+                return Container(
+                  child: ListTile(
+                    title: Text(l),
+                  ),
                 );
               },
             )),
             Text('result'),
             Expanded(
                 child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.horizontal,
               itemCount: result.length,
               itemBuilder: (BuildContext context, int index) {
                 List l = result[index];
                 return Container(
                     width: 160.0,
                     margin: const EdgeInsets.all(10),
-                    
                     color: Colors.red[100],
                     child: Center(
-                      child:Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        
-                        children: l.map((e){
-                        return Text(e); }
-                      ).toList())
-                    )) ;
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: l.map((e) {
+                              return Text(e);
+                            }).toList())));
               },
             )),
           ],

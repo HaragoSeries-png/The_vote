@@ -83,7 +83,7 @@ class _RandomSingleState extends State<RandomSingle> {
                               const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 25.0),
                           child: provider.li.length < 10
                               ? FortuneWheel(
-                                
+
                                   // changing the return animation when the user stops dragging
                                   physics: CircularPanPhysics(
                                     duration: Duration(seconds: 3),
@@ -94,65 +94,79 @@ class _RandomSingleState extends State<RandomSingle> {
                                   },
                                   animateFirst: false,
                                   selected: controller.stream,
-                                  items: (
-                                       provider.li.asMap().entries.map((e) {
-                                          return FortuneItem(
-                                            style: FortuneItemStyle(color:(e.key%2==1)?provider.ccolor[0]:provider.ccolor[1],),
-                                              child: Container(
-                                                  padding: const EdgeInsets.all(
-                                                      16.0),
-                                                  child: Text(e.value.toString(),
-                                                      style: TextStyle(
-                                                          fontSize: 16))));
-                                        }).toList()
-                                      ))
+                                  items: (provider.li.asMap().entries.map((e) {
+                                    return FortuneItem(
+                                        style: FortuneItemStyle(
+                                          color: (e.key % 2 == 1)
+                                              ? provider.ccolor[0]
+                                              : provider.ccolor[1],
+                                        ),
+                                        child: Container(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Text(e.value.toString(),
+                                                style:
+                                                    TextStyle(fontSize: 16))));
+                                  }).toList()))
                               : Column(
-                                children: [
-                                  FortuneBar(
-                                    height: 300,
-                                    animateFirst: false,
+                                  children: [
+                                    FortuneBar(
+                                      height: 300,
+                                      animateFirst: false,
                                       selected: controller.stream,
-                                      items: provider.li.asMap().entries.map((e) {
-                                              return FortuneItem(
-                                                style: FortuneItemStyle(color:(e.key%2==1)?Color(0xff6DC8F3):Color(0xff73A1F9),),
-                                                  child: Container(
-                                                      padding: const EdgeInsets.all(
-                                                          16.0),
-                                                      child: Text(e.toString(),
-                                                          style: TextStyle(
-                                                              fontSize: 16))));
-                                            }).toList(),
+                                      items:
+                                          provider.li.asMap().entries.map((e) {
+                                        return FortuneItem(
+                                            style: FortuneItemStyle(
+                                              color: (e.key % 2 == 1)
+                                                  ? Color(0xff6DC8F3)
+                                                  : Color(0xff73A1F9),
+                                            ),
+                                            child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Text(e.toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 16))));
+                                      }).toList(),
                                     ),
-                                    ElevatedButton(onPressed: (){ controller.add(1);}, child: Text('Random'))
-                                ],
-                              ),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          controller.add(1);
+                                        },
+                                        child: Text('Random'))
+                                  ],
+                                ),
                         )
                       : Text('add more'),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      child: ElevatedButton(
-                        onPressed: showmore,
-                        child: Text('SHOW CURRENT'),
-                        style: ElevatedButton.styleFrom(
-                          primary: provider.li.length > 1
-                              ? Colors.teal
-                              : Colors.grey,
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 80),
+                        child: ElevatedButton(
+                          onPressed: showmore,
+                          child: Text('SHOW CURRENT'),
+                          style: ElevatedButton.styleFrom(
+                            primary: provider.li.length > 1
+                                ? Colors.teal
+                                : Colors.grey,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      child: ElevatedButton(
-                        onPressed: showtrend,
-                        child: Text('TREND'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.teal,
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 80),
+                        child: ElevatedButton(
+                          onPressed: showtrend,
+                          child: Text('TREND'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.teal,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             );
@@ -206,6 +220,7 @@ class _ShowcurrentState extends State<Showcurrent> {
                     children: [
                       Text(l),
                       Container(
+                        margin: const EdgeInsets.only(top: 20),
                         child: ElevatedButton(
                             child: Text('Remove'),
                             onPressed: () {
