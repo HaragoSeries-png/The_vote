@@ -93,7 +93,8 @@ class Store extends ChangeNotifier {
   
 }
 class Votestore extends ChangeNotifier {
-  var li ;
+  String topic;
+  var li =0 ;
   bool finish=false;
   List<String> label ;
   List<int> votemap;

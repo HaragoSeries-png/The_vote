@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:html';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +21,7 @@ class _ThevotePageState extends State<ThevotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(
             'The Vote',
@@ -35,8 +36,20 @@ class _ThevotePageState extends State<ThevotePage> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
-                    onSubmitted: (number) {
-                      provider.setnumber(number);
+                    onChanged: (text) {
+                      provider.topic = text;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Topic",
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                    onChanged: (number) {
+                      if(number!=null){
+                        provider.setnumber(number);
+                      }                    
                     },
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
@@ -51,9 +64,13 @@ class _ThevotePageState extends State<ThevotePage> {
                 child: TextField(
                     controller: _textController,
                     onSubmitted: (text) {
-                      setState(() {
-                        label.add(text);
-                      });
+                      String cheker = text.trim();
+                      if(cheker.isNotEmpty){
+                        print('empty');
+                        setState(() {                        
+                          label.add(text);
+                        });
+                      }                     
                       _textController.clear();
                     },
                     decoration: InputDecoration(
@@ -87,9 +104,10 @@ class _ThevotePageState extends State<ThevotePage> {
                               child: Text("CURRENT CHOICE"))),
                 ),
               ),
-              (label.length > 1 && provider.li != null)
+              
+              (label.length > 1 && provider.li > 2)
                   ? Container(
-                      margin: const EdgeInsets.only(bottom: 20.0),
+                      
                       child: ElevatedButton(
                         onPressed: () {
                           provider.setlabel(this.label);
@@ -103,7 +121,7 @@ class _ThevotePageState extends State<ThevotePage> {
                       ),
                     )
                   : Container(
-                      margin: const EdgeInsets.only(bottom: 20.0),
+            
                       child: ElevatedButton(
                         child: Text('NEXT'),
                         style: ElevatedButton.styleFrom(
@@ -204,7 +222,24 @@ class Result extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(provider.result),
+              if(provider.topic!=null)Text(provider.topic),
+              Center(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: provider.votemap.asMap().entries.map((e){
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      width: 40,
+                      height: e.value.toDouble()*60,
+                      color: Colors.grey,
+                      
+                      child:Text(provider.label[e.key])
+                    );
+                  }).toList()
+                ),
+              ),
+              Text(provider.label.toString()),
               ElevatedButton(
                 onPressed: () => Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Mainpags())),

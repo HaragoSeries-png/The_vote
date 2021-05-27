@@ -226,7 +226,6 @@ class _ShowcurrentState extends State<Showcurrent> {
                 content: TextField(
                   controller: _textFieldController,
                   textInputAction: TextInputAction.go,
-                  keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(hintText: "Enter your number"),
                 ),
                 actions: <Widget>[
@@ -298,7 +297,7 @@ class _ShowcurrentState extends State<Showcurrent> {
                     _displayDialog(context);
                   },
                   child: Text('Save')),
-              ElevatedButton(onPressed: printall, child: Text('print'))
+              
             ],
           ),
         ),
