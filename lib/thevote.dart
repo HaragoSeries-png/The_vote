@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,12 +17,15 @@ class _ThevotePageState extends State<ThevotePage> {
   StreamController controller = StreamController();
   final TextEditingController _textController = new TextEditingController();
   List<String> label = [];
+  List<String> cate = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        
-          title: Text('The Vote'),
+          title: Text(
+            'The Vote',
+            style: TextStyle(fontFamily: 'Lobster'),
+          ),
           backgroundColor: Color(0xffD76EF5),
         ),
         body: Consumer(builder: (context, Votestore provider, Widget child) {
@@ -29,7 +33,7 @@ class _ThevotePageState extends State<ThevotePage> {
               child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextField(
                     onSubmitted: (number) {
                       provider.setnumber(number);
@@ -39,12 +43,11 @@ class _ThevotePageState extends State<ThevotePage> {
                       FilteringTextInputFormatter.digitsOnly
                     ],
                     decoration: InputDecoration(
-                      labelText: "จำนวนผู้ร่วมการ vote",
                       hintText: "จำนวนผู้ร่วมการ vote",
                     )),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextField(
                     controller: _textController,
                     onSubmitted: (text) {
@@ -54,39 +57,61 @@ class _ThevotePageState extends State<ThevotePage> {
                       _textController.clear();
                     },
                     decoration: InputDecoration(
-                      labelText: "ตัวเลือก",
                       hintText: "ตัวเลือก",
                     )),
               ),
-              Expanded(
-                  child: label.length > 0
-                      ? ListView.builder(
-                          itemCount: label.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            var l = label[index];
-                            return ListTile(
-                              title: Text(l),
-                            );
-                          },
-                        )
-                      : Text("please input")),
-              (label.length>1 && provider.li != null)?ElevatedButton(
-                  onPressed: () {
-                    provider.setlabel(this.label);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Vote()));
-                  },
-                  child: Text('next'),
-                  style: ElevatedButton.styleFrom(
-                    primary:   Colors.teal,
-                  ),
-              ):
-              ElevatedButton(
-                  child: Text('next'),
-                  style: ElevatedButton.styleFrom(
-                    primary:  Colors.grey,
-                  ), onPressed: () {  },
-              )
+              Container(
+                height: 300,
+                padding: EdgeInsets.only(left: 80, right: 80),
+                child: SizedBox(
+                  child: Expanded(
+                      child: label.length > 0
+                          ? GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 2),
+                              itemCount: label.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var l = label[index];
+                                return Container(
+                                  margin: EdgeInsets.only(top: 30, left: 0),
+                                  child: Text(l),
+                                  alignment: Alignment.center,
+                                );
+                              },
+                            )
+                          : Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              child: Text("CURRENT CHOICE"))),
+                ),
+              ),
+              (label.length > 1 && provider.li != null)
+                  ? Container(
+                      margin: const EdgeInsets.only(bottom: 20.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          provider.setlabel(this.label);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Vote()));
+                        },
+                        child: Text('NEXT'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xffD76EF5),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      margin: const EdgeInsets.only(bottom: 20.0),
+                      child: ElevatedButton(
+                        child: Text('NEXT'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.grey,
+                        ),
+                        onPressed: () {},
+                      ),
+                    )
             ],
           ));
         }));
@@ -105,14 +130,20 @@ class _VoteState extends State<Vote> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Vote'),
+          title: Text('The Vote'),
+          backgroundColor: Color(0xffD76EF5),
         ),
         body: Consumer(builder: (context, Votestore provider, Widget child) {
           return Container(
             margin: EdgeInsets.symmetric(vertical: 20.0),
             child: Column(
               children: [
-                Text(round.toString() + '/' + provider.li.toString()),
+                Container(
+                  child: Text(
+                    round.toString() + '/' + provider.li.toString(),
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
@@ -126,7 +157,8 @@ class _VoteState extends State<Vote> {
                         },
                         child: Container(
                           width: 160.0,
-                          margin: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.only(
+                              top: 20, left: 10, right: 10, bottom: 0),
                           color:
                               vindex == ti ? Colors.red[200] : Colors.red[100],
                           child: Center(child: Text(e)),
@@ -135,22 +167,26 @@ class _VoteState extends State<Vote> {
                     }).toList(),
                   ),
                 ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: vindex != null ? Colors.teal : Colors.grey),
-                    onPressed: () {
-                      provider.vote(vindex);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ConfirmPage()));
-                      setState(() {
-                        if (vindex != null) vindex = null;
-                        if(round==provider.li)return provider.calresult();
-                        round++;
-                      });
-                    },
-                    child: vindex != null ? Text("Next") : Text("No vote"))
+                Container(
+                  padding: EdgeInsets.only(top: 20),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary:
+                              vindex != null ? Color(0xffD76EF5) : Colors.grey),
+                      onPressed: () {
+                        provider.vote(vindex);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ConfirmPage()));
+                        setState(() {
+                          if (vindex != null) vindex = null;
+                          if (round == provider.li) return provider.calresult();
+                          round++;
+                        });
+                      },
+                      child: vindex != null ? Text("Next") : Text("Next")),
+                )
               ],
             ),
           );
@@ -162,24 +198,23 @@ class Result extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        
         body: Consumer(builder: (context, Votestore provider, Widget child) {
-          return Container(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(provider.result),
-                  ElevatedButton(
-                      onPressed: () => Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => Mainpags())),
-                      child: Text('End'),
-                    )
-                ],
-              ),
-            ),
-          );
-        }));
+      return Container(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(provider.result),
+              ElevatedButton(
+                onPressed: () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Mainpags())),
+                child: Text('End'),
+              )
+            ],
+          ),
+        ),
+      );
+    }));
   }
 }
 
@@ -188,7 +223,11 @@ class ConfirmPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('result'),
+          title: Text(
+            'The Vote',
+            style: TextStyle(fontFamily: 'Lobster'),
+          ),
+          backgroundColor: Color(0xffD76EF5),
         ),
         body: Consumer(builder: (context, Votestore provider, Widget child) {
           return provider.finish
@@ -201,12 +240,24 @@ class ConfirmPage extends StatelessWidget {
                     ),
                   ),
                 )
-              : Container(
-                  child: Center(
-                    child: ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text("Ready")),
-                  ),
+              : Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            child: Text(
+                          'Give Phone to the other',
+                          style: new TextStyle(
+                              fontSize: 30,
+                              fontFamily: 'PetitFormalScript',
+                              fontWeight: FontWeight.w200),
+                        )),
+                        Container(
+                          child: ElevatedButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text("Ready")),
+                        ),
+                      ]),
                 );
         }));
   }

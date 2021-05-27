@@ -49,7 +49,10 @@ class _RandomSingleState extends State<RandomSingle> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('All random'),
+          title: Text(
+            'All random',
+            style: TextStyle(fontFamily: 'Lobster'),
+          ),
           backgroundColor: Color(0xff6DC8F3),
         ),
         body: Consumer(
@@ -137,7 +140,7 @@ class _RandomSingleState extends State<RandomSingle> {
                                   ],
                                 ),
                         )
-                      : Text('add more'),
+                      : Text(''),
                 ),
                 Container(
                   child: Row(
@@ -256,7 +259,10 @@ class _ShowcurrentState extends State<Showcurrent> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(l),
+                            Container(
+                              child: Text(l),
+                              width: 100,
+                            ),
                             Container(
                               margin: const EdgeInsets.only(top: 20),
                               child: ElevatedButton(
@@ -312,33 +318,32 @@ class _TrendshowState extends State<Trendshow> {
     cuslist = await db.getcardlist();
     return true;
   }
+
   Future<bool> _showConfirmationDialog(BuildContext context, String action) {
-  return showDialog<bool>(
-    context: context,
-    barrierDismissible: true,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Do you want to $action this item?'),
-        actions: <Widget>[
-          ElevatedButton(
-            child: const Text('Yes'),
-            onPressed: () {
-              
-              Navigator.pop(context, true); // showDialog() returns true
-            },
-          ),
-          ElevatedButton(
-            child: const Text('No'),
-            onPressed: () {
-              Navigator.pop(context, false); // showDialog() returns false
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-  
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Do you want to $action this item?'),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                Navigator.pop(context, true); // showDialog() returns true
+              },
+            ),
+            ElevatedButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.pop(context, false); // showDialog() returns false
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   List<Map<String, dynamic>> cuslist;
   @override
@@ -513,14 +518,20 @@ class _TrendshowState extends State<Trendshow> {
                           children: cuslist.map((e) {
                         return Dismissible(
                           direction: DismissDirection.endToStart,
-                          confirmDismiss: (DismissDirection dismissDirection) async {                        
-                            return await _showConfirmationDialog(context, 'delete') == true;     
+                          confirmDismiss:
+                              (DismissDirection dismissDirection) async {
+                            return await _showConfirmationDialog(
+                                    context, 'delete') ==
+                                true;
                           },
-                          onDismissed: (DismissDirection dismissDirection){
+                          onDismissed: (DismissDirection dismissDirection) {
                             provider.delcard(e['id']);
                           },
                           key: UniqueKey(),
-                          background: Container(color: Colors.red[400],child: Icon(Icons.cancel),),
+                          background: Container(
+                            color: Colors.red[400],
+                            child: Icon(Icons.cancel),
+                          ),
                           child: Card(
                             clipBehavior: Clip.antiAlias,
                             shape: RoundedRectangleBorder(

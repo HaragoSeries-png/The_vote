@@ -72,7 +72,10 @@ class _GroupbState extends State<Groupb> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Groupby'),
+          title: Text(
+            'Groupby',
+            style: TextStyle(fontFamily: 'Lobster'),
+          ),
           backgroundColor: Color(0xffFFB157),
         ),
         body: Column(

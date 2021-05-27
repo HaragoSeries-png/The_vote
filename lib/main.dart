@@ -120,9 +120,9 @@ class _MainpagsState extends State<Mainpags> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-      return Future.value(false); // if true allow back else block it
-    },
-          child: Scaffold(
+        return Future.value(false); // if true allow back else block it
+      },
+      child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0.0,
@@ -131,7 +131,7 @@ class _MainpagsState extends State<Mainpags> {
           title: Text(
             'Select Mode',
             style: TextStyle(
-                fontFamily: 'Varela', fontSize: 20, color: Color(0xFF545D68)),
+                fontFamily: 'Lobster', fontSize: 20, color: Color(0xFF545D68)),
           ),
         ),
         body: ListView.builder(
@@ -190,9 +190,10 @@ class _MainpagsState extends State<Mainpags> {
                                   Text(
                                     items[index].name,
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 24),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 24,
+                                    ),
                                   ),
                                   Text(
                                     items[index].category,
