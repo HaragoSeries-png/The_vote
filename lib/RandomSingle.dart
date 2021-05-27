@@ -312,6 +312,35 @@ class _TrendshowState extends State<Trendshow> {
     cuslist = await db.getcardlist();
     return true;
   }
+  Future<bool> _showConfirmationDialog(BuildContext context, String action) {
+  return showDialog<bool>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Do you want to $action this item?'),
+        actions: <Widget>[
+          ElevatedButton(
+            child: const Text('Yes'),
+            onPressed: () {
+              condel();
+              Navigator.pop(context, true); // showDialog() returns true
+            },
+          ),
+          ElevatedButton(
+            child: const Text('No'),
+            onPressed: () {
+              Navigator.pop(context, false); // showDialog() returns false
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+  void condel(){
+    print('dell');
+  }
 
   List<Map<String, dynamic>> cuslist;
   @override
@@ -484,38 +513,46 @@ class _TrendshowState extends State<Trendshow> {
                     if (snapshot.hasData) {
                       return Column(
                           children: cuslist.map((e) {
-                        return Card(
-                          clipBehavior: Clip.antiAlias,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Ink.image(
-                                image: AssetImage(
-                                  'assets/img/dummy.jpg',
+                        return Dismissible(
+                          direction: DismissDirection.endToStart,
+                          confirmDismiss: (DismissDirection dismissDirection) async {                        
+                            return await _showConfirmationDialog(context, 'delete') == true;     
+                          },
+                          key: UniqueKey(),
+                          background: Container(color: Colors.red[400],child: Icon(Icons.cancel),),
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Ink.image(
+                                  image: AssetImage(
+                                    'assets/img/dummy.jpg',
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      provider.getcarddata(e['id']);
+                                      Navigator.pop(
+                                        context,
+                                      );
+                                    },
+                                  ),
+                                  height: 240,
+                                  fit: BoxFit.cover,
                                 ),
-                                child: InkWell(
-                                  onTap: () {
-                                    provider.getcarddata(e['id']);
-                                    Navigator.pop(
-                                      context,
-                                    );
-                                  },
+                                Text(
+                                  e['columnCardname'],
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      letterSpacing: 2.5),
                                 ),
-                                height: 240,
-                                fit: BoxFit.cover,
-                              ),
-                              Text(
-                                e['columnCardname'],
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    letterSpacing: 2.5),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       }).toList());

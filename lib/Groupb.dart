@@ -14,7 +14,7 @@ class _GroupbState extends State<Groupb> {
   final TextEditingController _textController = new TextEditingController();
   final random = Random();
 
-  List<String> li = ['1', '2', '3', '4'];
+  List<String> li = [];
   String S;
   List result = [];
   int ng = 2;
