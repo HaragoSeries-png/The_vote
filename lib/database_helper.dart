@@ -100,10 +100,13 @@ class DatabaseHelper{
     print(myQueryList.toString());
     return myQueryList;
   }
-
   Future<int> delete(int row)async{
-    Database db = await instace.database;
+    Database db = await instace.database;   
     return await db.delete(cardtable,where:'$columnID = ?',whereArgs: [row]);
+  }
+  Future<int> deletecarddata(int row)async{
+    Database db = await instace.database;   
+    return await db.delete(carddatatable,where:'$parentid = ?',whereArgs: [row]);
   }
 
 }

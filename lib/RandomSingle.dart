@@ -323,7 +323,7 @@ class _TrendshowState extends State<Trendshow> {
           ElevatedButton(
             child: const Text('Yes'),
             onPressed: () {
-              condel();
+              
               Navigator.pop(context, true); // showDialog() returns true
             },
           ),
@@ -338,9 +338,7 @@ class _TrendshowState extends State<Trendshow> {
     },
   );
 }
-  void condel(){
-    print('dell');
-  }
+  
 
   List<Map<String, dynamic>> cuslist;
   @override
@@ -517,6 +515,9 @@ class _TrendshowState extends State<Trendshow> {
                           direction: DismissDirection.endToStart,
                           confirmDismiss: (DismissDirection dismissDirection) async {                        
                             return await _showConfirmationDialog(context, 'delete') == true;     
+                          },
+                          onDismissed: (DismissDirection dismissDirection){
+                            provider.delcard(e['id']);
                           },
                           key: UniqueKey(),
                           background: Container(color: Colors.red[400],child: Icon(Icons.cancel),),

@@ -85,6 +85,11 @@ class Store extends ChangeNotifier {
     }).toList();
     notifyListeners();
   }
+  void delcard(int cardid)async{
+    await db.delete(cardid);
+    await db.deletecarddata(cardid);
+    
+  }
   
 }
 class Votestore extends ChangeNotifier {
