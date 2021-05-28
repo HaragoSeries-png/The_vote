@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:random_color/random_color.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
 
 class Groupb extends StatefulWidget {
   @override
@@ -57,7 +58,6 @@ class _GroupbState extends State<Groupb> {
         retemp.add(n);
         pool.removeAt(re);
       }
-
       setState(() {
         result.add(retemp);
       });
@@ -131,16 +131,15 @@ class _GroupbState extends State<Groupb> {
                             });
                           },
                         ),
+                        
                       ]
                     : [Text('hello')],
               ),
             ),
             Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(
-                  left: 80, right: 80, top: 30, bottom: 0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+              child: Container(
+                padding: const EdgeInsets.only(
+                    left: 80, right: 80, top: 30, bottom: 0),
                 child: ListView.builder(
                   itemCount: li.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -154,7 +153,7 @@ class _GroupbState extends State<Groupb> {
                   },
                 ),
               ),
-            )),
+            ),
             Container(
                 margin: const EdgeInsets.only(left: 30, top: 40),
                 child: Row(

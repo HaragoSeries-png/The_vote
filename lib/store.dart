@@ -99,10 +99,11 @@ class Votestore extends ChangeNotifier {
   List<String> label ;
   List<int> votemap;
   int votenum =0;
-  String result;
+  double result;
   void setnumber(data) {
     li = int.parse(data);
     finish=false;
+    notifyListeners();
   }
 
   void vote(index) {
@@ -123,7 +124,7 @@ class Votestore extends ChangeNotifier {
         re = label[i];
       }     
     }
-    result = re;
+    result = la.toDouble();
     finish=true;
   }
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:the_vote/store.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/provider.dart';
@@ -58,8 +59,8 @@ class _ThevotePageState extends State<ThevotePage> {
                     decoration: InputDecoration(
                       hintText: "จำนวนผู้ร่วมการ vote",
                     )),
-              ),
-              Padding(
+              ),             
+                Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
                     controller: _textController,
@@ -67,6 +68,9 @@ class _ThevotePageState extends State<ThevotePage> {
                       String cheker = text.trim();
                       if(cheker.isNotEmpty){
                         print('empty');
+                        print((label.length > 1).toString()+' and '+ label.toString());
+                        print((provider.li > 2).toString()+' dd '+ provider.li.toString());
+                        print(((label.length > 1) && (provider.li > 2)));
                         setState(() {                        
                           label.add(text);
                         });
@@ -103,11 +107,9 @@ class _ThevotePageState extends State<ThevotePage> {
                               margin: const EdgeInsets.only(top: 20),
                               child: Text("CURRENT CHOICE"))),
                 ),
-              ),
-              
-              (label.length > 1 && provider.li > 2)
-                  ? Container(
-                      
+              ),              
+              ((label.length > 1 )&& (provider.li > 2))
+                  ? Container(                      
                       child: ElevatedButton(
                         onPressed: () {
                           provider.setlabel(this.label);
@@ -120,8 +122,7 @@ class _ThevotePageState extends State<ThevotePage> {
                         ),
                       ),
                     )
-                  : Container(
-            
+                  : Container(            
                       child: ElevatedButton(
                         child: Text('NEXT'),
                         style: ElevatedButton.styleFrom(
@@ -144,6 +145,10 @@ class Vote extends StatefulWidget {
 class _VoteState extends State<Vote> {
   int vindex;
   int round = 1;
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,8 +204,8 @@ class _VoteState extends State<Vote> {
                                 builder: (context) => ConfirmPage()));
                         setState(() {
                           if (vindex != null) vindex = null;
-                          if (round == provider.li) return provider.calresult();
-                          round++;
+                          if (round == provider.li) return provider.calresult(); 
+                          round++;                       
                         });
                       },
                       child: vindex != null ? Text("Next") : Text("Next")),
@@ -217,37 +222,57 @@ class Result extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Consumer(builder: (context, Votestore provider, Widget child) {
-      return Container(
-        child: Center(
+      return Column(
+        children: [
+          if(provider.topic!=null)Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(provider.topic,style: TextStyle(fontSize: 40,fontWeight:FontWeight.bold ),)),
+          ),
+          Spacer(),
+          Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if(provider.topic!=null)Text(provider.topic),
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [             
               Center(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: provider.votemap.asMap().entries.map((e){
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      width: 40,
-                      height: e.value.toDouble()*60,
-                      color: Colors.grey,
-                      
-                      child:Text(provider.label[e.key])
-                    );
-                  }).toList()
+                child:SingleChildScrollView (
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: provider.label.asMap().entries.map((e){
+                      int indx = e.key;
+                      var hi =  provider.votemap[indx].toDouble();
+                      double max = provider.result;
+                      return 
+                      Column(
+                        children: [  
+                          Text(hi.toInt().toString()) ,                    
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            width: 40,
+                            height:(hi/max)*200,
+                            color: Colors.grey,
+                          ),
+                          Text(e.value),
+                        ],
+                      );
+                    }).toList()
+                  ),
                 ),
               ),
-              Text(provider.label.toString()),
-              ElevatedButton(
-                onPressed: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => Mainpags())),
-                child: Text('End'),
+              
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 50),
+                child: ElevatedButton(                
+                  onPressed: () => Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Mainpags())),
+                  child: Text('End'),
+                ),
               )
             ],
           ),
-        ),
+        ),]
       );
     }));
   }
