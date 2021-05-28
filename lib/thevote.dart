@@ -149,7 +149,7 @@ class _VoteState extends State<Vote> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('The Vote'),
+          title: Text('The vote'),
           backgroundColor: Color(0xffD76EF5),
         ),
         body: Consumer(builder: (context, Votestore provider, Widget child) {

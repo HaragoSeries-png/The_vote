@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:random_color/random_color.dart';
 import 'package:flutter/services.dart';
 
-
 class Groupb extends StatefulWidget {
   @override
   _GroupbState createState() => _GroupbState();
@@ -76,7 +75,7 @@ class _GroupbState extends State<Groupb> {
         appBar: AppBar(
           title: Text(
             'Random group',
-            style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           backgroundColor: Color(0xffFFB157),
         ),
@@ -96,37 +95,35 @@ class _GroupbState extends State<Groupb> {
             Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
               child: TextField(
-                controller: _numController,
-                            onChanged: (number) {
-                              if(number!=null){
-                                int io = int.parse(number);
-                                if(io>li.length ){
-                                  setState(() {
-                                    ng = li.length ;
-                                    _numController.text = ng.toString();                                 
-                                  });
-                                }
-                                else{
-                                  setState(() {
-                                    ng = io ;
-                                  });
-                                }                              
-                              }                    
-                            },
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                              hintText: "จำนวนกลุ่ม")
-                          ),
+                  controller: _numController,
+                  onChanged: (number) {
+                    if (number != null) {
+                      int io = int.parse(number);
+                      if (io > li.length) {
+                        setState(() {
+                          ng = li.length;
+                          _numController.text = ng.toString();
+                        });
+                      } else {
+                        setState(() {
+                          ng = io;
+                        });
+                      }
+                    }
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  decoration: InputDecoration(hintText: "จำนวนกลุ่ม")),
             ),
             Container(
               margin: const EdgeInsets.only(
                   left: 90, right: 90, top: 20, bottom: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: li.length > 1 ? [
+                children: li.length > 1
+                    ? [
                         ElevatedButton(
                           onPressed: randd,
                           child: Text('Random'),
@@ -143,10 +140,8 @@ class _GroupbState extends State<Groupb> {
                             primary: li.length == 0 ? Colors.teal : Colors.red,
                           ),
                         ),
-                       
-                        
-                      ]:
-                     [Text('hello')],
+                      ]
+                    : [Text('Value')],
               ),
             ),
             Expanded(
@@ -178,18 +173,18 @@ class _GroupbState extends State<Groupb> {
             Expanded(
                 child: Container(
               margin: const EdgeInsets.only(
-                  left: 80, right: 80, top: 20, bottom: 30),
+                  left: 30, right: 30, top: 20, bottom: 30),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: result.length,
                 itemBuilder: (BuildContext context, int index) {
                   List l = result[index];
                   return ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(20),
                     child: Container(
                         width: 160.0,
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(50),
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        padding: const EdgeInsets.all(30),
                         color: Color(0xffeed9cd),
                         child: Center(
                             child: Column(
