@@ -78,7 +78,7 @@ class _ThevotePageState extends State<ThevotePage> {
               ),
               Container(
                 height: 300,
-                padding: EdgeInsets.only(left: 80, right: 80),
+                padding: EdgeInsets.only(left: 40, right: 40),
                 child: SizedBox(
                   child: Expanded(
                       child: label.length > 0
@@ -93,7 +93,7 @@ class _ThevotePageState extends State<ThevotePage> {
                                 var l = label[index];
                                 return Container(
                                   margin: EdgeInsets.only(top: 30, left: 0),
-                                  child: Text(l),
+                                  child: Text(l,style: TextStyle(fontSize: 18),),
                                   alignment: Alignment.center,
                                 );
                               },

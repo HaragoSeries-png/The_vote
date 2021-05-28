@@ -66,9 +66,13 @@ class _RandomSingleState extends State<RandomSingle> {
                       decoration:
                           new InputDecoration(hintText: "Input Here!!!"),
                       onSubmitted: (text) {
-                        var t = provider.add(text);
-
-                        _textController.clear();
+                        String cheker = text.trim();
+                        if (cheker.isNotEmpty) {
+                          setState(() {
+                            provider.add(text);
+                          });
+                        }
+                        _textController.clear();                      
                       },
                     )),
                 // ElevatedButton(
@@ -219,11 +223,11 @@ class _ShowcurrentState extends State<Showcurrent> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('What is your Lucky Number'),
+                title: Text('Named your card'),
                 content: TextField(
                   controller: _textFieldController,
                   textInputAction: TextInputAction.go,
-                  decoration: InputDecoration(hintText: "Enter your number"),
+                  decoration: InputDecoration(hintText: "Card name"),
                 ),
                 actions: <Widget>[
                   new ElevatedButton(
@@ -357,13 +361,16 @@ class _TrendshowState extends State<Trendshow> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         centerTitle: true,
-        title: Text(
-          'Trending Now',
-          style: TextStyle(
-              fontFamily: 'Varela',
-              fontSize: 20,
-              color: Colors.black,
-              letterSpacing: 2.0),
+        title: Container(
+          padding: const EdgeInsets.only(top:10),
+          child: Text(
+            'Trending Now',
+            style: TextStyle(
+                fontFamily: 'Varela',
+                fontSize: 32,
+                color: Colors.black,
+                letterSpacing: 2.0),
+          ),
         ),
       ),
       body: Consumer(builder: (context, Store provider, Widget child) {

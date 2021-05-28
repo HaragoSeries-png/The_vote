@@ -131,7 +131,7 @@ class _MainpagsState extends State<Mainpags> {
           title: Text(
             'Select Mode',
             style: TextStyle(
-                fontFamily: 'Lobster', fontSize: 20, color: Color(0xFF545D68)),
+                fontFamily: 'Lobster', fontSize: 32, color: Color(0xFF545D68)),
           ),
         ),
         body: ListView.builder(

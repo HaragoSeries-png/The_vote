@@ -19,7 +19,7 @@ class _GroupbState extends State<Groupb> {
   List<String> li = [];
   String S;
   List result = [];
-  int ng = 2;
+  int ng = 1;
 
   @override
   void initState() {
@@ -40,33 +40,21 @@ class _GroupbState extends State<Groupb> {
   }
 
   void randd() {
-    result = [];
-    List pool = List.of(li);
-    var retemp = [];
-    var gsize = (li.length.toDouble() / ng.toDouble()).ceil();
-    print('ng ' + ng.toString());
-    print('gsize ' + gsize.toString());
-    for (var i = 0; i < ng; i++) {
-      for (var k = 0; k < gsize; k++) {
-        var re;
-        if (pool.length <= gsize) {
-          retemp = List.of(pool);
-          pool = [];
-          break;
-        }
-        re = random.nextInt(pool.length);
-        var n = pool[re];
-        retemp.add(n);
-        pool.removeAt(re);
-      }
-      setState(() {
-        result.add(retemp);
-      });
-      retemp = [];
-      if (pool.isEmpty) {
-        break;
-      }
+    List lpool = List.of(li);
+    // List lpool = [for (var i = 0; i < 15; i++) i.toString()];
+    List gpool = [for (var i = 0; i < ng; i++) []];
+    var iround = lpool.length;
+    for(var i =0 ;i<iround;i++){
+      var ridx = random.nextInt(lpool.length);
+      var p = lpool[ridx];
+      gpool[i%ng].add(p);
+      lpool.removeAt(ridx);
     }
+    print(gpool.toString());
+    setState(() {
+      result = gpool;
+    });
+    
   }
 
   @override
@@ -82,14 +70,18 @@ class _GroupbState extends State<Groupb> {
         body: Column(
           children: <Widget>[
             Padding(
-                padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                 child: TextField(
                   controller: _textController,
                   decoration: new InputDecoration(hintText: "Input here!!"),
                   onSubmitted: (text) {
-                    print(li.length);
-                    _updateResults(text);
-                    _textController.clear();
+                    String cheker = text.trim();
+                      if (cheker.isNotEmpty) {
+                        setState(() {
+                           _updateResults(text);
+                        });
+                      }
+                      _textController.clear();
                   },
                 )),
             Padding(
@@ -122,7 +114,7 @@ class _GroupbState extends State<Groupb> {
                   left: 90, right: 90, top: 20, bottom: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: li.length > 1
+                children: ((li.length > 1)&&(ng>1))
                     ? [
                         ElevatedButton(
                           onPressed: randd,
@@ -163,7 +155,7 @@ class _GroupbState extends State<Groupb> {
               ),
             ),
             Container(
-                margin: const EdgeInsets.only(left: 30, top: 40),
+                margin: const EdgeInsets.only(left: 30,),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -181,17 +173,15 @@ class _GroupbState extends State<Groupb> {
                   List l = result[index];
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Container(
+                    child: Container(                     
                         width: 160.0,
                         margin: const EdgeInsets.only(left: 10, right: 10),
                         padding: const EdgeInsets.all(30),
                         color: Color(0xffeed9cd),
                         child: Center(
-                            child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                            child: ListView(
                                 children: l.map((e) {
-                                  return Text(e);
+                                  return Center(child: Text(e));
                                 }).toList()))),
                   );
                 },
