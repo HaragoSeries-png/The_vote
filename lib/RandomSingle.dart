@@ -51,7 +51,7 @@ class _RandomSingleState extends State<RandomSingle> {
         appBar: AppBar(
           title: Text(
             'All random',
-            style: TextStyle(fontFamily: 'Lobster'),
+            style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600),
           ),
           backgroundColor: Color(0xff6DC8F3),
         ),
@@ -100,7 +100,7 @@ class _RandomSingleState extends State<RandomSingle> {
                                   items: (provider.li.asMap().entries.map((e) {
                                     return FortuneItem(
                                         style: FortuneItemStyle(
-                                          color:provider.ccolor[e.key % 4]    
+                                          color:provider.ccolor[e.key % 2]    
                                         ),
                                         child: Container(
                                             padding: const EdgeInsets.all(16.0),
@@ -118,9 +118,7 @@ class _RandomSingleState extends State<RandomSingle> {
                                           provider.li.asMap().entries.map((e) {
                                         return FortuneItem(
                                             style: FortuneItemStyle(
-                                              color: (e.key % 2 == 1)
-                                                  ? Color(0xff6DC8F3)
-                                                  : Color(0xff73A1F9),
+                                              color: provider.ccolor[e.key % 2] ,
                                             ),
                                             child: Container(
                                                 padding:
@@ -478,35 +476,7 @@ class _TrendshowState extends State<Trendshow> {
                     ],
                   ),
                 ),
-                Card(
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Ink.image(
-                        image: AssetImage(
-                          'assets/img/dummy.jpg',
-                        ),
-                        child: InkWell(
-                          onTap: () {},
-                        ),
-                        height: 240,
-                        fit: BoxFit.cover,
-                      ),
-                      Text(
-                        'COMING SOON',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 24,
-                            letterSpacing: 2.5),
-                      ),
-                    ],
-                  ),
-                ),
+                
                 FutureBuilder(
                   future: getlist(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -569,7 +539,36 @@ class _TrendshowState extends State<Trendshow> {
                       return Center(child: CircularProgressIndicator());
                     }
                   },
-                )
+                ),
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Ink.image(
+                        image: AssetImage(
+                          'assets/img/dummy.jpg',
+                        ),
+                        child: InkWell(
+                          onTap: () {},
+                        ),
+                        height: 240,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(
+                        'COMING SOON',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 24,
+                            letterSpacing: 2.5),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             )),
           ],

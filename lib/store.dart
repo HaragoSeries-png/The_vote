@@ -28,10 +28,10 @@ class Store extends ChangeNotifier {
     } else if (cat == 'food') {
       li = ['ต้มยำ', 'กระเพรา', 'ข้าวผัด', 'คะน้าหมูกรอบ'];
       ccolor = [
-        Color(0xffbb2734),
-        Color(0xffd8765c),
-        Color(0xffc2d5da),
-        Color(0xffeacbcb)
+        Color(0xff900C3F),
+        Color(0xffC70039),
+        Color(0xffFF5733),
+        Color(0xffFFC300)
       ];
     } else if (cat == 'luck') {
       li = ['เกลือ', 'เกลือมาก', 'เกลือที่สุด', 'เกลื่อเหมือนกันแต่เปลี่ยนสี'];

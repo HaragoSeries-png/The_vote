@@ -75,8 +75,8 @@ class _GroupbState extends State<Groupb> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Groupby',
-            style: TextStyle(fontFamily: 'Lobster'),
+            'Random group',
+            style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600),
           ),
           backgroundColor: Color(0xffFFB157),
         ),

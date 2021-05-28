@@ -26,7 +26,7 @@ class _ThevotePageState extends State<ThevotePage> {
         appBar: AppBar(
           title: Text(
             'The Vote',
-            style: TextStyle(fontFamily: 'Lobster'),
+            style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600),
           ),
           backgroundColor: Color(0xffD76EF5),
         ),
