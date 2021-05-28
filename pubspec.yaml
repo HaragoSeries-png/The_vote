@@ -35,7 +35,7 @@ dependencies:
   path_provider: ^2.0.1
   provider: ^5.0.0
   random_color: ^1.0.5
-  flutter_spinbox: ^0.5.2
+
   
 
 dev_dependencies:
