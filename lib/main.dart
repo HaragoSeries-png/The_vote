@@ -94,7 +94,6 @@ class _MainpagsState extends State<Mainpags> {
         'Random Single Mode',
         Color(0xff6DC8F3),
         Color(0xff73A1F9),
-        1,
         'You can create your own challenge or make your decision with yourself',
         '________________',
         'Random'),
@@ -102,7 +101,6 @@ class _MainpagsState extends State<Mainpags> {
         'Random Group',
         Color(0xffFFB157),
         Color(0xffFFA057),
-        2,
         'You can mange you group random with yourself in this function',
         '________________',
         'GroupRandom'),
@@ -110,7 +108,6 @@ class _MainpagsState extends State<Mainpags> {
         'The Vote',
         Color(0xffD76EF5),
         Color(0xff8F7AFE),
-        3,
         'You can not make decision with you friend So,let the vote help you:)',
         '________________',
         'Thevote'),
@@ -128,10 +125,14 @@ class _MainpagsState extends State<Mainpags> {
           elevation: 0.0,
           centerTitle: true,
           automaticallyImplyLeading: false,
-          title: Text(
-            'Select Mode',
-            style: TextStyle(
-                fontFamily: 'Lobster', fontSize: 30, color: Color(0xFF545D68)),
+          title: Container(
+            child: Text(
+              'Select Mode',
+              style: TextStyle(
+                  fontFamily: 'Lobster',
+                  fontSize: 30,
+                  color: Color(0xFF545D68)),
+            ),
           ),
         ),
         body: ListView.builder(
@@ -219,19 +220,7 @@ class _MainpagsState extends State<Mainpags> {
                                 flex: 2,
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Text(
-                                      items[index].rating.toString(),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.white,
-                                    ),
-                                  ],
+                                  children: <Widget>[],
                                 ),
                               )
                             ],
@@ -254,12 +243,11 @@ class PlaceInfo {
   final String name;
   final String category;
   final String location;
-  final double rating;
   final Color startColor;
   final Color endColor;
   final String route;
-  PlaceInfo(this.name, this.startColor, this.endColor, this.rating,
-      this.location, this.category, this.route);
+  PlaceInfo(this.name, this.startColor, this.endColor, this.location,
+      this.category, this.route);
 }
 
 class CustomCardShapePainter extends CustomPainter {
