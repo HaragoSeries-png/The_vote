@@ -86,6 +86,7 @@ class _RandomSingleState extends State<RandomSingle> {
                               const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 25.0),
                           child: provider.li.length < 10
                               ? FortuneWheel(
+                                
 
                                   // changing the return animation when the user stops dragging
                                   physics: CircularPanPhysics(
@@ -99,9 +100,9 @@ class _RandomSingleState extends State<RandomSingle> {
                                   selected: controller.stream,
                                   items: (provider.li.asMap().entries.map((e) {
                                     return FortuneItem(
-                                        style: FortuneItemStyle(
-                                          color:provider.ccolor[e.key % 2]    
-                                        ),
+                                        // style: FortuneItemStyle(
+                                        //   color:provider.ccolor[e.key % 2]    
+                                        // ),
                                         child: Container(
                                             padding: const EdgeInsets.all(16.0),
                                             child: Text(e.value.toString(),

@@ -28,8 +28,8 @@ class Store extends ChangeNotifier {
     } else if (cat == 'food') {
       li = ['ต้มยำ', 'กระเพรา', 'ข้าวผัด', 'คะน้าหมูกรอบ'];
       ccolor = [
-        Color(0xff659dbd),
-        Color(0xffdaad68),
+        Color(0xffc3073f),
+        Color(0xffff652f),
         Color(0xffbc896a),
         Color(0xfffbeec1)
       ];
