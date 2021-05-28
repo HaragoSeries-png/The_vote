@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
@@ -22,11 +21,11 @@ class _ThevotePageState extends State<ThevotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(
             'The Vote',
-            style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
           ),
           backgroundColor: Color(0xffD76EF5),
         ),
@@ -48,33 +47,33 @@ class _ThevotePageState extends State<ThevotePage> {
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
                     onChanged: (number) {
-                      if(number!=null){
+                      if (number != null) {
                         provider.setnumber(number);
-                      }                    
+                      }
                     },
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly
                     ],
                     decoration: InputDecoration(
-                      hintText: "จำนวนผู้ร่วมการ vote",
+                      hintText: "Number of people (atleast 3 or more)",
                     )),
-              ),             
-                Padding(
+              ),
+              Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
                     controller: _textController,
                     onSubmitted: (text) {
                       String cheker = text.trim();
-                      if(cheker.isNotEmpty){
-                        setState(() {                        
+                      if (cheker.isNotEmpty) {
+                        setState(() {
                           label.add(text);
                         });
-                      }                     
+                      }
                       _textController.clear();
                     },
                     decoration: InputDecoration(
-                      hintText: "ตัวเลือก",
+                      hintText: "Choice",
                     )),
               ),
               Container(
@@ -103,9 +102,9 @@ class _ThevotePageState extends State<ThevotePage> {
                               margin: const EdgeInsets.only(top: 20),
                               child: Text("CURRENT CHOICE"))),
                 ),
-              ),              
-              ((label.length > 1 )&& (provider.li > 2))
-                  ? Container(                      
+              ),
+              ((label.length > 1) && (provider.li > 2))
+                  ? Container(
                       child: ElevatedButton(
                         onPressed: () {
                           provider.setlabel(this.label);
@@ -118,7 +117,7 @@ class _ThevotePageState extends State<ThevotePage> {
                         ),
                       ),
                     )
-                  : Container(            
+                  : Container(
                       child: ElevatedButton(
                         child: Text('NEXT'),
                         style: ElevatedButton.styleFrom(
@@ -145,11 +144,12 @@ class _VoteState extends State<Vote> {
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('The Vote'),
+          title: Text('The vote'),
           backgroundColor: Color(0xffD76EF5),
         ),
         body: Consumer(builder: (context, Votestore provider, Widget child) {
@@ -180,7 +180,14 @@ class _VoteState extends State<Vote> {
                               top: 20, left: 10, right: 10, bottom: 0),
                           color:
                               vindex == ti ? Colors.red[200] : Colors.red[100],
-                          child: Center(child: Text(e)),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              (e),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
                         ),
                       );
                     }).toList(),
@@ -200,8 +207,8 @@ class _VoteState extends State<Vote> {
                                 builder: (context) => ConfirmPage()));
                         setState(() {
                           if (vindex != null) vindex = null;
-                          if (round == provider.li) return provider.calresult(); 
-                          round++;                       
+                          if (round == provider.li) return provider.calresult();
+                          round++;
                         });
                       },
                       child: vindex != null ? Text("Next") : Text("Next")),
@@ -217,60 +224,85 @@ class Result extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text('The Vote'),
+          backgroundColor: Color(0xffD76EF5),
+        ),
         body: Consumer(builder: (context, Votestore provider, Widget child) {
-      return Column(
-        children: [
-          if(provider.topic!=null)Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(provider.topic,style: TextStyle(fontSize: 40,fontWeight:FontWeight.bold ),)),
-          ),
-          Spacer(),
-          Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [             
-              Center(
-                child:SingleChildScrollView (
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: provider.label.asMap().entries.map((e){
-                      int indx = e.key;
-                      var hi =  provider.votemap[indx].toDouble();
-                      double max = provider.result;
-                      return 
-                      Column(
-                        children: [  
-                          Text(hi.toInt().toString()) ,                    
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            width: 40,
-                            height:(hi/max)*200,
-                            color: Colors.grey,
-                          ),
-                          Text(e.value),
-                        ],
-                      );
-                    }).toList()
-                  ),
-                ),
+          return Column(children: [
+            if (provider.topic != null)
+              Container(
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 60),
+                child: Center(
+                    child: Text(
+                  'Topic',
+                  style: TextStyle(fontSize: 30),
+                )),
               ),
-              
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 50),
-                child: ElevatedButton(                
-                  onPressed: () => Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Mainpags())),
-                  child: Text('End'),
-                ),
-              )
-            ],
-          ),
-        ),]
-      );
-    }));
+            Container(
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 60),
+              child: Center(
+                  child: Text(
+                provider.topic,
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              )),
+            ),
+            Spacer(),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: provider.label.asMap().entries.map((e) {
+                            int indx = e.key;
+                            var hi = provider.votemap[indx].toDouble();
+                            double max = provider.result;
+                            return Column(
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    child: Text(
+                                      hi.toInt().toString(),
+                                    )),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  width: 40,
+                                  height: (hi / max) * 200,
+                                  color: Color(0xffD76EF5),
+                                ),
+                                Container(
+                                    margin: EdgeInsets.only(top: 10),
+                                    child: Text(e.value)),
+                              ],
+                            );
+                          }).toList()),
+                    ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: Text('All Choice')),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 50),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xffD76EF5),
+                      ),
+                      onPressed: () => Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Mainpags())),
+                      child: Text('END'),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ]);
+        }));
   }
 }
 
@@ -290,9 +322,12 @@ class ConfirmPage extends StatelessWidget {
               ? Container(
                   child: Center(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xffD76EF5),
+                      ),
                       onPressed: () => Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Result())),
-                      child: Text('Show result'),
+                      child: Text('SHOW RESULT'),
                     ),
                   ),
                 )
@@ -301,17 +336,27 @@ class ConfirmPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                            child: Text(
-                          'Give Phone to the other',
-                          style: new TextStyle(
-                              fontSize: 30,
-                              fontFamily: 'PetitFormalScript',
-                              fontWeight: FontWeight.w200),
+                            child: Image(
+                          image: NetworkImage(
+                              'https://media.tenor.com/images/5c0287f4786253f196eca9959f5e64fd/tenor.gif'),
+                          width: 300,
+                          height: 300,
                         )),
                         Container(
+                            child: Text(
+                          'Give phone to the other',
+                          style: new TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.w200),
+                        )),
+                        Container(
+                          margin: EdgeInsets.only(top: 30),
                           child: ElevatedButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text("Ready")),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xffD76EF5),
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            child: Text("Ready"),
+                          ),
                         ),
                       ]),
                 );
