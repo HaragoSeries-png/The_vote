@@ -131,7 +131,7 @@ class _MainpagsState extends State<Mainpags> {
           title: Text(
             'Select Mode',
             style: TextStyle(
-                fontFamily: 'Lobster', fontSize: 20, color: Color(0xFF545D68)),
+                fontFamily: 'Lobster', fontSize: 30, color: Color(0xFF545D68)),
           ),
         ),
         body: ListView.builder(
@@ -141,100 +141,104 @@ class _MainpagsState extends State<Mainpags> {
               onTap: () {
                 test(items[index].route);
               },
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        height: 150,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(_borderRadius),
-                            gradient: LinearGradient(
-                                colors: [
-                                  items[index].startColor,
-                                  items[index].endColor
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: items[index].endColor,
-                                  blurRadius: 3,
-                                  offset: Offset(0, 2))
-                            ]),
-                      ),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        top: 0,
-                        child: CustomPaint(
-                          size: Size(100, 160),
-                          painter: CustomCardShapePainter(_borderRadius,
-                              items[index].startColor, items[index].endColor),
+              child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(_borderRadius),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    items[index].startColor,
+                                    items[index].endColor
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: items[index].endColor,
+                                    blurRadius: 3,
+                                    offset: Offset(0, 2))
+                              ]),
                         ),
-                      ),
-                      Positioned.fill(
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: imgFunction(items[index].route),
-                              flex: 2,
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    items[index].name,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 24,
-                                    ),
-                                  ),
-                                  Text(
-                                    items[index].category,
-                                    style: TextStyle(
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          top: 0,
+                          child: CustomPaint(
+                            size: Size(100, 160),
+                            painter: CustomCardShapePainter(_borderRadius,
+                                items[index].startColor, items[index].endColor),
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: imgFunction(items[index].route),
+                                flex: 2,
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      items[index].name,
+                                      style: TextStyle(
                                         color: Colors.white,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      items[index].location,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 24,
+                                      ),
+                                    ),
+                                    Text(
+                                      items[index].category,
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w500),
                                     ),
-                                  ),
-                                ],
+                                    Flexible(
+                                      child: Text(
+                                        items[index].location,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    items[index].rating.toString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      items[index].rating.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
