@@ -82,6 +82,12 @@ flutter:
     - family: PetitFormalScript
       fonts:
         - asset: fonts/PetitFormalScript-Regular.ttf
+    - family: Heebo
+      fonts:
+        - asset: fonts/Heebo-VariableFont_wght.ttf
+               
+       
+     
       
 
 
