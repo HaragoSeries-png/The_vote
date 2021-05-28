@@ -100,9 +100,7 @@ class _RandomSingleState extends State<RandomSingle> {
                                   items: (provider.li.asMap().entries.map((e) {
                                     return FortuneItem(
                                         style: FortuneItemStyle(
-                                          color: (e.key % 2 == 1)
-                                              ? provider.ccolor[0]
-                                              : provider.ccolor[1],
+                                          color:provider.ccolor[e.key % 4]    
                                         ),
                                         child: Container(
                                             padding: const EdgeInsets.all(16.0),
