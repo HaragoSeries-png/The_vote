@@ -96,7 +96,7 @@ class _MainpagsState extends State<Mainpags> {
         Color(0xff73A1F9),
         1,
         'You can create your own challenge or make your decision with yourself',
-        '___________________________________',
+        '________________',
         'Random'),
     PlaceInfo(
         'Random Group',
@@ -104,7 +104,7 @@ class _MainpagsState extends State<Mainpags> {
         Color(0xffFFA057),
         2,
         'You can mange you group random with yourself in this function',
-        '___________________________________',
+        '________________',
         'GroupRandom'),
     PlaceInfo(
         'The Vote',
@@ -112,7 +112,7 @@ class _MainpagsState extends State<Mainpags> {
         Color(0xff8F7AFE),
         3,
         'You can not make decision with you friend So,let the vote help you:)',
-        '___________________________________',
+        '________________',
         'Thevote'),
   ];
 

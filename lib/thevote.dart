@@ -67,10 +67,6 @@ class _ThevotePageState extends State<ThevotePage> {
                     onSubmitted: (text) {
                       String cheker = text.trim();
                       if(cheker.isNotEmpty){
-                        print('empty');
-                        print((label.length > 1).toString()+' and '+ label.toString());
-                        print((provider.li > 2).toString()+' dd '+ provider.li.toString());
-                        print(((label.length > 1) && (provider.li > 2)));
                         setState(() {                        
                           label.add(text);
                         });

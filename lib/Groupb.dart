@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:random_color/random_color.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 
 class Groupb extends StatefulWidget {
@@ -13,6 +14,7 @@ Color _color = _randomColor.randomColor(colorBrightness: ColorBrightness.light);
 
 class _GroupbState extends State<Groupb> {
   final TextEditingController _textController = new TextEditingController();
+  final TextEditingController _numController = new TextEditingController();
   final random = Random();
 
   List<String> li = [];
@@ -91,13 +93,40 @@ class _GroupbState extends State<Groupb> {
                     _textController.clear();
                   },
                 )),
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+              child: TextField(
+                controller: _numController,
+                            onChanged: (number) {
+                              if(number!=null){
+                                int io = int.parse(number);
+                                if(io>li.length ){
+                                  setState(() {
+                                    ng = li.length ;
+                                    _numController.text = ng.toString();                                 
+                                  });
+                                }
+                                else{
+                                  setState(() {
+                                    ng = io ;
+                                  });
+                                }                              
+                              }                    
+                            },
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            decoration: InputDecoration(
+                              hintText: "จำนวนกลุ่ม")
+                          ),
+            ),
             Container(
               margin: const EdgeInsets.only(
                   left: 90, right: 90, top: 20, bottom: 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: li.length > 1
-                    ? [
+                children: li.length > 1 ? [
                         ElevatedButton(
                           onPressed: randd,
                           child: Text('Random'),
@@ -114,26 +143,10 @@ class _GroupbState extends State<Groupb> {
                             primary: li.length == 0 ? Colors.teal : Colors.red,
                           ),
                         ),
-                        DropdownButton(
-                          value: ng,
-                          items: li.map((
-                            String value,
-                          ) {
-                            var v = li.indexOf(value) + 1;
-                            return DropdownMenuItem(
-                              child: Text((v).toString()),
-                              value: v,
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              ng = value;
-                            });
-                          },
-                        ),
+                       
                         
-                      ]
-                    : [Text('hello')],
+                      ]:
+                     [Text('hello')],
               ),
             ),
             Expanded(
