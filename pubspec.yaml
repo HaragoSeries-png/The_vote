@@ -86,6 +86,9 @@ flutter:
     - family: Heebo
       fonts:
         - asset: fonts/Heebo-VariableFont_wght.ttf
+    - family: VarelaRound
+      fonts:
+        - asset: fonts/VarelaRound-Regular.ttf        
                
        
      

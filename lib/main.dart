@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         },
         debugShowCheckedModeBanner: false,
         title: 'The vote',
-        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Heebo'),
+        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'VarelaRound'),
         home: Mainpags(),
       ),
     );
