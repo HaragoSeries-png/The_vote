@@ -24,7 +24,7 @@ class DatabaseHelper {
   static Database _database;
 
   Future<Database> get database async {
-    print('database get');
+
     if (_database != null) {
       return _database;
     }

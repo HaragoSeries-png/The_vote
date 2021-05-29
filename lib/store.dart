@@ -16,7 +16,7 @@ class Store extends ChangeNotifier {
   }
 
   void changecategory(cat) {
-    print(cat);
+
     if (cat == 'travel') {
       li = ['หัวหิน', 'ทะเล', 'ภูเขา', 'คลอง'];
       ccolor = [
@@ -46,10 +46,10 @@ class Store extends ChangeNotifier {
   }
 
   void setdefalt() {
-    print('de');
+
     ccolor = [Color(0xff6DC8F3), Color(0xff73A1F9)];
     li = [];
-    print(li);
+
     notifyListeners();
   }
 
@@ -58,15 +58,14 @@ class Store extends ChangeNotifier {
       DatabaseHelper.columnCardname: cardname,
     };
     var r = await db.createcard(row);
-    print('row id ' + r.toString());
-    print(li.toString());
+
     li.forEach((element) async {
       print(element);
       Map<String, dynamic> drow = {
         DatabaseHelper.parentid: r,
         DatabaseHelper.columnCarddata: element.toString()
       };
-      print('drow ' + drow.toString());
+
       await db.insertdata(drow);
     });
   }
@@ -81,7 +80,7 @@ class Store extends ChangeNotifier {
 
   void printall(int cardID) async {
     var q = await db.getcarddata(1);
-    print(q.toString());
+
   }
 
   Future<List<Map<String, dynamic>>> getcardlist() async {
@@ -91,7 +90,6 @@ class Store extends ChangeNotifier {
 
   void getcarddata(cardid) async {
     var r = await db.getcarddata(cardid);
-    print(r.toString());
 
     li = r.map((e) {
       return e['columnCarddata'].toString();
@@ -121,13 +119,13 @@ class Votestore extends ChangeNotifier {
 
   void vote(index) {
     votemap[index]++;
-    print(votemap);
+
   }
 
   void setlabel(List<String> l) {
     label = l;
     votemap = [for (var i = 0; i < l.length; i++) 0];
-    print(votemap);
+
   }
 
   void calresult() {
