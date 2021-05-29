@@ -139,7 +139,7 @@ class _GroupbState extends State<Groupb> {
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(
-                    left: 80, right: 80, top: 30, bottom: 0),
+                    left: 80, right: 80, top: 30, bottom: 20),
                 child: ListView.builder(
                   itemCount: li.length,
                   itemBuilder: (BuildContext context, int index) {

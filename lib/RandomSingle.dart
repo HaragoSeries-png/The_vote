@@ -17,7 +17,7 @@ class RandomSingle extends StatefulWidget {
 }
 
 class _RandomSingleState extends State<RandomSingle> {
-  StreamController<int> controller = StreamController<int>();
+  StreamController<int> controller = StreamController<int>.broadcast();
   final TextEditingController _textController = new TextEditingController();
   final db = DatabaseHelper.instace;
   final random = Random();
@@ -50,7 +50,7 @@ class _RandomSingleState extends State<RandomSingle> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'All random',
+            'Random single',
             style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600),
           ),
           backgroundColor: Color(0xff6DC8F3),
@@ -88,7 +88,7 @@ class _RandomSingleState extends State<RandomSingle> {
                       ? Padding(
                           padding:
                               const EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 25.0),
-                          child: provider.li.length < 10
+                          child: provider.li.length < 5
                               ? FortuneWheel(
                                 
 
@@ -98,7 +98,7 @@ class _RandomSingleState extends State<RandomSingle> {
                                     curve: Curves.decelerate,
                                   ),
                                   onFling: () {
-                                    controller.add(1);
+                                    controller.add(random.nextInt(provider.li.length));
                                   },
                                   animateFirst: false,
                                   selected: controller.stream,
@@ -113,35 +113,33 @@ class _RandomSingleState extends State<RandomSingle> {
                                                 style:
                                                     TextStyle(fontSize: 16))));
                                   }).toList()))
-                              : Column(
+                              : ListView(
                                   children: [
                                     FortuneBar(
-                                      height: 300,
+                                      height: 150,
                                       animateFirst: false,
                                       selected: controller.stream,
                                       items:
-                                          provider.li.asMap().entries.map((e) {
+                                        provider.li.asMap().entries.map((e) {
                                         return FortuneItem(
-                                            style: FortuneItemStyle(
-                                              color: provider.ccolor[e.key % 2] ,
-                                            ),
+                                            
                                             child: Container(
                                                 padding:
                                                     const EdgeInsets.all(16.0),
-                                                child: Text(e.toString(),
+                                                child: Text(e.value.toString(),
                                                     style: TextStyle(
                                                         fontSize: 16))));
                                       }).toList(),
                                     ),
                                     ElevatedButton(
                                         onPressed: () {
-                                          controller.add(1);
+                                          controller.add(random.nextInt(2+provider.li.length));
                                         },
                                         child: Text('Random'))
                                   ],
                                 ),
                         )
-                      : Text(''),
+                      : Text('Addmore '+(2-provider.li.length).toString()+' item'),
                 ),
                 Container(
                   child: Row(
@@ -194,8 +192,8 @@ class _ShowcurrentState extends State<Showcurrent> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text('Number'),
-          Text('Value'),
+          Text('Choice'),
+          Text('Option'),
         ],
       ),
     )
@@ -293,7 +291,7 @@ class _ShowcurrentState extends State<Showcurrent> {
                   },
                 ),
               ),
-              ElevatedButton(
+              if(provider.li.length>1)ElevatedButton(
                   onPressed: () {
                     _displayDialog(context);
                   },
