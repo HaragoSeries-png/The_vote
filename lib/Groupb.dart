@@ -50,7 +50,7 @@ class _GroupbState extends State<Groupb> {
       gpool[i%ng].add(p);
       lpool.removeAt(ridx);
     }
-    print(gpool.toString());
+  
     setState(() {
       result = gpool;
     });

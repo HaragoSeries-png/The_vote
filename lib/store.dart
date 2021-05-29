@@ -60,7 +60,7 @@ class Store extends ChangeNotifier {
     var r = await db.createcard(row);
 
     li.forEach((element) async {
-      print(element);
+
       Map<String, dynamic> drow = {
         DatabaseHelper.parentid: r,
         DatabaseHelper.columnCarddata: element.toString()

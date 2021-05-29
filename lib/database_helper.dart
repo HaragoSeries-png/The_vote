@@ -41,7 +41,7 @@ class DatabaseHelper {
   }
 
   Future _onCreate(Database db, int version) async {
-    print('create');
+
     await db.execute('''
       create table $cardtable(
         $columnID integer primary key autoincrement,
@@ -58,14 +58,14 @@ class DatabaseHelper {
   }
 
   Future<int> insertdata(Map<String, dynamic> row) async {
-    print(row.toString());
+
     Database db = await instace.database;
     return await db.insert('carddatatable', row);
   }
 
   Future<int> createcard(Map<String, dynamic> row) async {
     Database db = await instace.database;
-    print(row);
+
 
     return await db.insert('cardtable', row);
     ;
@@ -82,25 +82,25 @@ class DatabaseHelper {
 
     List<Map<String, dynamic>> myQueryList =
         await db.rawQuery('select * from carddatatable');
-    print(myQueryList.toString());
+
     return myQueryList;
   }
 
   Future<List<Map<String, dynamic>>> getcarddata(int cardid) async {
     Database db = await instace.database;
-    print('parent id :' + cardid.toString());
+
     List<Map<String, dynamic>> myQueryList = await db.rawQuery(
         'select columnCarddata from carddatatable where parentid = $cardid');
-    print('qre ' + myQueryList.toString());
+
     return myQueryList;
   }
 
   Future<List<Map<String, dynamic>>> getcardlist() async {
-    print('getlist');
+
     Database db = await instace.database;
     List<Map<String, dynamic>> myQueryList =
         await db.rawQuery('select * from cardtable ');
-    print(myQueryList.toString());
+ 
     return myQueryList;
   }
 

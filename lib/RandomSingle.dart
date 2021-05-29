@@ -212,10 +212,7 @@ class _ShowcurrentState extends State<Showcurrent> {
         provider.createcard(cardname);
       }
 
-      void printall() {
-        provider.printall(1);
-      }
-
+  
       _displayDialog(BuildContext context) async {
         return showDialog(
             context: context,
@@ -346,7 +343,7 @@ class _TrendshowState extends State<Trendshow> {
   List<Map<String, dynamic>> cuslist;
   @override
   void initState() {
-    print('init');
+
     getlist();
     super.initState();
   }
